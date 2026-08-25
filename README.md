@@ -48,7 +48,7 @@ cp .env.example .env.local   # optional — defaults to Studionet addresses
 npm run dev
 ```
 
-Open http://localhost:3000 — connect MetaMask, use **Cases** and **Criteria**.
+Open https://evidence-desk-chi.valandelon.com — connect MetaMask, use **Cases** and **Criteria**.
 
 ### Deploy (Vercel)
 
