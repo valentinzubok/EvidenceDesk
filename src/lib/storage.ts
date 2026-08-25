@@ -29,10 +29,7 @@ export function getFavoriteCases(): string[] {
 export function touchRecentCase(caseId: string): string[] {
   const trimmed = caseId.trim();
   if (!trimmed) return getRecentCases();
-  const next = [trimmed, ...getRecentCases().filter((id) => id !== trimmed)].slice(
-    0,
-    MAX_RECENT,
-  );
+  const next = [trimmed, ...getRecentCases().filter((id) => id !== trimmed)].slice(0, MAX_RECENT);
   writeList(RECENT_KEY, next);
   return next;
 }
@@ -41,9 +38,7 @@ export function toggleFavoriteCase(caseId: string): { favorites: string[]; added
   const trimmed = caseId.trim();
   const current = getFavoriteCases();
   const exists = current.includes(trimmed);
-  const favorites = exists
-    ? current.filter((id) => id !== trimmed)
-    : [trimmed, ...current];
+  const favorites = exists ? current.filter((id) => id !== trimmed) : [trimmed, ...current];
   writeList(FAVORITES_KEY, favorites);
   return { favorites, added: !exists };
 }

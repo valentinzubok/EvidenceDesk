@@ -53,7 +53,9 @@ GenLayer is central: all reads/writes go through **genlayer-js** on **Studionet*
 
 ---
 
-## Run locally
+## Getting started
+
+**Full guide:** [docs/quickstart.md](docs/quickstart.md)
 
 ```bash
 git clone https://github.com/valentinzubok/EvidenceDesk.git
@@ -108,7 +110,7 @@ npm run lint
 npm run build
 ```
 
-Contract integration tests require Studionet RPC; UI E2E with Cypress can be added for MetaMask flows.
+Contract integration tests require Studionet RPC. CI runs lint, test, and build on every push.
 
 ---
 
@@ -150,10 +152,19 @@ Submit under **Projects** — see [SUBMIT.md](SUBMIT.md).
 
 ## Docs
 
+- [Quickstart](docs/quickstart.md) — step-by-step local setup & troubleshooting
+- [Criteria templates](docs/templates.md) — examples & card previews
 - [Architecture](docs/ARCHITECTURE.md) — stack & design decisions
 - [Roadmap](docs/ROADMAP.md) — factory, GraphQL, RBAC (planned)
 - [OpenAPI](docs/openapi.yaml) — contract surface for integrators
 - [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
+
+## API routes
+
+| Route | Description |
+|-------|-------------|
+| `GET /api/cases` | On-chain case IDs |
+| `GET /api/history?ids=a,b` | Validate client favorites/recent against chain |
 
 ---
 

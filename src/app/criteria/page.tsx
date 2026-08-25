@@ -221,7 +221,11 @@ export default function CriteriaPage() {
               <button type="button" onClick={copyId} className="btn-icon">
                 {t.criteria.copyId}
               </button>
-              <button type="button" onClick={copyBody} className="btn-primary !py-1.5 !px-3 !text-xs">
+              <button
+                type="button"
+                onClick={copyBody}
+                className="btn-primary !py-1.5 !px-3 !text-xs"
+              >
                 {t.criteria.copy}
               </button>
             </div>

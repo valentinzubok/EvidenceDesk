@@ -27,7 +27,10 @@ export function Alert({
         ? "border-teal-500/30 bg-teal-950/40 text-teal-100"
         : "border-amber-500/30 bg-amber-950/50 text-amber-200";
   return (
-    <p className={`rounded-xl border px-4 py-3 text-sm break-all backdrop-blur-sm ${cls}`} role="alert">
+    <p
+      className={`rounded-xl border px-4 py-3 text-sm break-all backdrop-blur-sm ${cls}`}
+      role="alert"
+    >
       {message}
     </p>
   );
@@ -62,10 +65,14 @@ export function PageHero({
   return (
     <header className="animate-fade-up space-y-3 pb-2">
       {eyebrow ? (
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-400/90">{eyebrow}</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-400/90">
+          {eyebrow}
+        </p>
       ) : null}
       <h1 className="gradient-text text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
-      {subtitle ? <p className="max-w-2xl text-sm leading-relaxed text-zinc-400">{subtitle}</p> : null}
+      {subtitle ? (
+        <p className="max-w-2xl text-sm leading-relaxed text-zinc-400">{subtitle}</p>
+      ) : null}
       {children}
     </header>
   );
@@ -121,7 +128,9 @@ export function SearchInput({
 }) {
   return (
     <div className="relative">
-      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">⌕</span>
+      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
+        ⌕
+      </span>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}

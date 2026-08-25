@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { classifyError, errorKindIcon } from "@/lib/errorKind";
 import { formatWalletError, formatReadError } from "@/lib/errors";
 import { markdownPreview, parseJson } from "@/lib/preview";
 import { isValidCaseId, parseUrlsJson } from "@/lib/validate";
@@ -27,6 +28,18 @@ describe("markdownPreview", () => {
 describe("formatWalletError", () => {
   it("maps user rejection", () => {
     expect(formatWalletError({ code: 4001, message: "User rejected" })).toMatch(/rejected/i);
+  });
+});
+
+describe("classifyError", () => {
+  it("detects metamask errors", () => {
+    expect(classifyError({ code: 4001 })).toBe("metamask");
+    expect(errorKindIcon("metamask")).toBe("🦊");
+  });
+
+  it("detects network errors", () => {
+    expect(classifyError(new Error("wrong network chain"))).toBe("network");
+    expect(errorKindIcon("network")).toBe("⚡");
   });
 });
 

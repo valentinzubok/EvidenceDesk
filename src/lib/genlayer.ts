@@ -5,9 +5,7 @@ import { TransactionStatus } from "genlayer-js/types";
 
 export type Address = `0x${string}`;
 
-type EthereumProvider = NonNullable<
-  Parameters<typeof createClient>[0]
->["provider"];
+type EthereumProvider = NonNullable<Parameters<typeof createClient>[0]>["provider"];
 
 export function getReadClient() {
   return createClient({ chain: studionet });

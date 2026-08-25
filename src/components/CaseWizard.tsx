@@ -104,7 +104,12 @@ export function CaseWizard({ open, onClose, onSubmit, submitting }: Props) {
               {steps[step]}
             </p>
           </div>
-          <button type="button" onClick={resetAndClose} className="btn-icon !border-0" aria-label="Close">
+          <button
+            type="button"
+            onClick={resetAndClose}
+            className="btn-icon !border-0"
+            aria-label="Close"
+          >
             ✕
           </button>
         </div>
@@ -129,7 +134,11 @@ export function CaseWizard({ open, onClose, onSubmit, submitting }: Props) {
                     onChange={(e) => setCaseId(sanitizeCaseId(e.target.value))}
                     maxLength={64}
                   />
-                  <button type="button" onClick={() => setCaseId(generateCaseId())} className="btn-icon shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setCaseId(generateCaseId())}
+                    className="btn-icon shrink-0"
+                  >
                     {t.cases.generateId}
                   </button>
                 </div>
@@ -168,7 +177,11 @@ export function CaseWizard({ open, onClose, onSubmit, submitting }: Props) {
                     className="flex items-start gap-2 rounded-lg border border-white/5 bg-black/20 p-2 text-xs"
                   >
                     <span className="flex-1 break-all text-teal-300/90">{u}</span>
-                    <button type="button" onClick={() => removeUrl(u)} className="text-zinc-500 hover:text-red-400">
+                    <button
+                      type="button"
+                      onClick={() => removeUrl(u)}
+                      className="text-zinc-500 hover:text-red-400"
+                    >
                       ×
                     </button>
                   </li>
@@ -196,7 +209,12 @@ export function CaseWizard({ open, onClose, onSubmit, submitting }: Props) {
 
         <div className="mt-6 flex flex-wrap gap-2 border-t border-white/10 pt-4">
           {step > 0 ? (
-            <button type="button" onClick={() => setStep((s) => s - 1)} className="btn-ghost" disabled={submitting}>
+            <button
+              type="button"
+              onClick={() => setStep((s) => s - 1)}
+              className="btn-ghost"
+              disabled={submitting}
+            >
               {w.back}
             </button>
           ) : (
@@ -225,7 +243,12 @@ export function CaseWizard({ open, onClose, onSubmit, submitting }: Props) {
               {w.next}
             </button>
           ) : (
-            <button type="button" onClick={handleSubmit} disabled={submitting} className="btn-primary min-w-[120px]">
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={submitting}
+              className="btn-primary min-w-[120px]"
+            >
               {submitting ? <Spinner size="sm" /> : t.cases.openCase}
             </button>
           )}

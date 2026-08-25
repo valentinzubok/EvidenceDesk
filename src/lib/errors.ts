@@ -27,7 +27,9 @@ export function formatWalletError(error: unknown, locale: Locale = "en"): string
       : "MetaMask not found. Install the extension and refresh.";
   }
   if (/insufficient funds/i.test(message)) {
-    return locale === "ua" ? "Недостатньо коштів для gas." : "Insufficient funds for transaction gas.";
+    return locale === "ua"
+      ? "Недостатньо коштів для gas."
+      : "Insufficient funds for transaction gas.";
   }
   if (/network/i.test(message)) {
     return locale === "ua"

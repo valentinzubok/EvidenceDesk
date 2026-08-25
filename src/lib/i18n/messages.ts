@@ -186,9 +186,18 @@ export const messages: Record<Locale, Messages> = {
       liveDemo: "Live demo",
       featuresTitle: "Why Evidence Desk",
       features: [
-        { title: "On-chain evidence", desc: "Freeze URL snapshots with cryptographic hashes on Studionet." },
-        { title: "Shared criteria", desc: "Browse and copy eq-principle templates from PromptRegistry." },
-        { title: "Tamper detection", desc: "cross_check flags when live pages drift from frozen evidence." },
+        {
+          title: "On-chain evidence",
+          desc: "Freeze URL snapshots with cryptographic hashes on Studionet.",
+        },
+        {
+          title: "Shared criteria",
+          desc: "Browse and copy eq-principle templates from PromptRegistry.",
+        },
+        {
+          title: "Tamper detection",
+          desc: "cross_check flags when live pages drift from frozen evidence.",
+        },
       ],
       statsTitle: "Network snapshot",
       explorer: "View on Explorer",
@@ -197,8 +206,14 @@ export const messages: Record<Locale, Messages> = {
       storySubtitle:
         "Evidence Desk is a live console — not a mock. It reads and writes real contracts on Studionet, turning scattered URLs and criteria into a verifiable on-chain trail.",
       storySteps: [
-        { title: "Capture", desc: "Paste HTTPS URLs into a case — web evidence enters the workflow." },
-        { title: "Freeze", desc: "EvidenceSnapshot stores hash + preview while the link still works." },
+        {
+          title: "Capture",
+          desc: "Paste HTTPS URLs into a case — web evidence enters the workflow.",
+        },
+        {
+          title: "Freeze",
+          desc: "EvidenceSnapshot stores hash + preview while the link still works.",
+        },
         { title: "Criteria", desc: "Pick eq-principle templates from PromptRegistry by id." },
         { title: "Prove", desc: "cross_check later — tamper flags if live pages drift." },
       ],
@@ -393,9 +408,18 @@ export const messages: Record<Locale, Messages> = {
       liveDemo: "Живе демо",
       featuresTitle: "Чому Evidence Desk",
       features: [
-        { title: "Докази на ланцюгу", desc: "Заморожуйте знімки URL з криптографічними хешами на Studionet." },
-        { title: "Спільні критерії", desc: "Переглядайте та копіюйте шаблони eq-principle з PromptRegistry." },
-        { title: "Виявлення змін", desc: "cross_check позначає, коли сторінки відрізняються від зафіксованих доказів." },
+        {
+          title: "Докази на ланцюгу",
+          desc: "Заморожуйте знімки URL з криптографічними хешами на Studionet.",
+        },
+        {
+          title: "Спільні критерії",
+          desc: "Переглядайте та копіюйте шаблони eq-principle з PromptRegistry.",
+        },
+        {
+          title: "Виявлення змін",
+          desc: "cross_check позначає, коли сторінки відрізняються від зафіксованих доказів.",
+        },
       ],
       statsTitle: "Стан мережі",
       explorer: "Відкрити в Explorer",
@@ -405,9 +429,15 @@ export const messages: Record<Locale, Messages> = {
         "Evidence Desk — жива консоль, не mock. Читає та пише в реальні контракти на Studionet, перетворюючи розрізнені URL та критерії на перевірений on-chain слід.",
       storySteps: [
         { title: "Захопити", desc: "Додайте HTTPS URL у кейс — web-докази входять у workflow." },
-        { title: "Заморозити", desc: "EvidenceSnapshot зберігає хеш + preview, поки посилання ще працює." },
+        {
+          title: "Заморозити",
+          desc: "EvidenceSnapshot зберігає хеш + preview, поки посилання ще працює.",
+        },
         { title: "Критерії", desc: "Оберіть eq-principle шаблони з PromptRegistry за id." },
-        { title: "Довести", desc: "Пізніше cross_check — прапор підміни, якщо сторінки змінились." },
+        {
+          title: "Довести",
+          desc: "Пізніше cross_check — прапор підміни, якщо сторінки змінились.",
+        },
       ],
       storyQuote:
         "«Спорам потрібно більше, ніж скріншоти. Ми фіксуємо правду, додаємо спільні правила — і ланцюг записує, що змінилось.»",

@@ -13,6 +13,7 @@ import {
   StatCard,
 } from "@/components/ui";
 import { useLocale } from "@/components/LocaleProvider";
+import { useErrorToast } from "@/components/ErrorToast";
 import { useToast } from "@/components/ToastProvider";
 import { useWallet } from "@/components/WalletProvider";
 import { crossCheckCase, getCase, getCaseStats, listCaseIds, openCase } from "@/lib/contracts";
@@ -32,6 +33,7 @@ type CrossCheckPhase = "idle" | "fetching" | "submitting" | "failed";
 export default function CasesPage() {
   const { t, locale } = useLocale();
   const { push } = useToast();
+  const pushError = useErrorToast();
   const { address, provider, connect } = useWallet();
   const [caseIds, setCaseIds] = useState<string[]>([]);
   const [selected, setSelected] = useState<EvidenceCase | null>(null);
@@ -122,6 +124,7 @@ export default function CasesPage() {
     } catch (e) {
       setMessageTone("warn");
       setMessage(formatWriteError(e, locale));
+      pushError(e, "write");
       throw e;
     } finally {
       setTxLoading(false);
@@ -159,6 +162,7 @@ export default function CasesPage() {
     } catch (e) {
       setMessageTone("warn");
       setMessage(formatWriteError(e, locale));
+      pushError(e, "write");
       setCrossCheckPhase("failed");
       setFailedCrossCheckId(id);
     } finally {
@@ -204,7 +208,11 @@ export default function CasesPage() {
         <div className="flex flex-wrap gap-3 animate-fade-up">
           <StatCard label="Cases" value={stats.cases} />
           <StatCard label="Clean" value={stats.clean} tone="ok" />
-          <StatCard label="Tampered" value={stats.tampered} tone={stats.tampered > 0 ? "bad" : "neutral"} />
+          <StatCard
+            label="Tampered"
+            value={stats.tampered}
+            tone={stats.tampered > 0 ? "bad" : "neutral"}
+          />
         </div>
       ) : null}
 
@@ -225,7 +233,9 @@ export default function CasesPage() {
 
       {failedCrossCheckId ? (
         <GlassCard className="border-amber-500/30 bg-amber-500/5">
-          <p className="text-sm text-amber-200">{t.cases.crossCheckFailed}: {failedCrossCheckId}</p>
+          <p className="text-sm text-amber-200">
+            {t.cases.crossCheckFailed}: {failedCrossCheckId}
+          </p>
           <button
             type="button"
             onClick={() => handleCrossCheck(failedCrossCheckId)}
@@ -262,7 +272,11 @@ export default function CasesPage() {
         <GlassCard className="animate-fade-up flex flex-col items-start gap-4">
           <h2 className="text-lg font-semibold text-white">{t.cases.openNew}</h2>
           <p className="text-sm text-zinc-400">{t.wizard.reviewHint}</p>
-          <button type="button" onClick={() => setWizardOpen(true)} className="btn-primary w-full sm:w-auto">
+          <button
+            type="button"
+            onClick={() => setWizardOpen(true)}
+            className="btn-primary w-full sm:w-auto"
+          >
             {t.wizard.openWizard}
           </button>
         </GlassCard>
@@ -356,7 +370,9 @@ export default function CasesPage() {
                     {item.url}
                   </a>
                   <p className="text-xs text-zinc-500">{t.cases.hash}</p>
-                  <p className="font-mono text-[11px] text-zinc-400 break-all">{item.content_hash}</p>
+                  <p className="font-mono text-[11px] text-zinc-400 break-all">
+                    {item.content_hash}
+                  </p>
                   {item.preview ? (
                     <>
                       <p className="text-xs text-zinc-500">{t.cases.preview}</p>

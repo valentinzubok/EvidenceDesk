@@ -63,7 +63,10 @@ export function ProjectStory() {
                   </span>
                 </div>
                 {i < steps.length - 1 ? (
-                  <span className="story-mobile-connector my-2 block h-6 w-px bg-gradient-to-b from-teal-500/50 to-transparent sm:hidden" aria-hidden />
+                  <span
+                    className="story-mobile-connector my-2 block h-6 w-px bg-gradient-to-b from-teal-500/50 to-transparent sm:hidden"
+                    aria-hidden
+                  />
                 ) : null}
                 <h3 className="mt-3 text-sm font-semibold text-white">{step.title}</h3>
                 <p className="mt-1 max-w-[180px] text-xs leading-relaxed text-zinc-500">
@@ -73,7 +76,10 @@ export function ProjectStory() {
             ))}
           </ol>
 
-          <div className="story-particles pointer-events-none absolute inset-0 hidden sm:block" aria-hidden>
+          <div
+            className="story-particles pointer-events-none absolute inset-0 hidden sm:block"
+            aria-hidden
+          >
             {[0, 1, 2].map((n) => (
               <span key={n} className={`story-particle story-particle-${n + 1}`} />
             ))}

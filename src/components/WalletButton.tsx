@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocale } from "./LocaleProvider";
+import { useErrorToast } from "./ErrorToast";
 import { useToast } from "./ToastProvider";
 import { useWallet } from "./WalletProvider";
 
@@ -10,6 +11,7 @@ const METAMASK_URL = "https://metamask.io/download/";
 export function WalletButton() {
   const { t } = useLocale();
   const { push } = useToast();
+  const pushError = useErrorToast();
   const {
     address,
     status,
@@ -33,6 +35,10 @@ export function WalletButton() {
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
+
+  useEffect(() => {
+    if (error && !address) pushError(new Error(error), "wallet");
+  }, [error, address, pushError]);
 
   const handleConnect = useCallback(async () => {
     if (!hasMetaMask) {
@@ -66,7 +72,11 @@ export function WalletButton() {
               {studionetReady ? t.nav.connected : t.common.loading}
             </p>
             <p className="px-2 pb-2 font-mono text-xs text-zinc-300 break-all">{address}</p>
-            <button type="button" onClick={handleCopy} className="btn-icon w-full justify-start !rounded-lg">
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="btn-icon w-full justify-start !rounded-lg"
+            >
               {t.nav.copyAddress}
             </button>
             <button
@@ -95,12 +105,8 @@ export function WalletButton() {
       >
         {connecting ? t.nav.connecting : t.nav.connect}
       </button>
-      {showModal ? (
-        <WalletModal onClose={() => setShowModal(false)} />
-      ) : null}
-      {error && !address ? (
-        <span className="sr-only">{error}</span>
-      ) : null}
+      {showModal ? <WalletModal onClose={() => setShowModal(false)} /> : null}
+      {error && !address ? <span className="sr-only">{error}</span> : null}
     </>
   );
 }

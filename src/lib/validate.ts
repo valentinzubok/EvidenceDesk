@@ -2,12 +2,7 @@ const CASE_ID_RE = /^[a-zA-Z0-9_-]{1,64}$/;
 const HTTPS_URL_RE = /^https:\/\/[^\s<>"']+$/i;
 
 export type UrlValidationError =
-  | "invalid_json"
-  | "empty_array"
-  | "too_many_urls"
-  | "not_string"
-  | "https_only"
-  | "url_too_long";
+  "invalid_json" | "empty_array" | "too_many_urls" | "not_string" | "https_only" | "url_too_long";
 
 export function sanitizeCaseId(raw: string): string {
   return raw.trim().slice(0, 64);

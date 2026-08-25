@@ -4,22 +4,22 @@
 
 Evidence Desk is a **Next.js 16** dApp that composes two GenLayer primitives:
 
-| Primitive | Contract role |
-|-----------|----------------|
+| Primitive        | Contract role                                        |
+| ---------------- | ---------------------------------------------------- |
 | EvidenceSnapshot | `open_case`, `get_case`, `cross_check`, `list_cases` |
-| PromptRegistry | `top`, `get_body` |
+| PromptRegistry   | `top`, `get_body`                                    |
 
 All chain I/O goes through **[genlayer-js](https://github.com/genlayerlabs/genlayer-js)** on **Studionet** (GenLayer Studio testnet).
 
 ## Why Next.js + genlayer-js?
 
-| Choice | Reason |
-|--------|--------|
+| Choice                 | Reason                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------- |
 | **Next.js App Router** | Static-friendly deploy on Vercel, fast first paint, simple routing for Cases/Criteria |
-| **TypeScript** | Typed contract wrappers, fewer runtime errors in calldata |
-| **genlayer-js** | Official SDK — `readContract`, `writeContract`, Studionet connect via MetaMask |
-| **No custom backend** | Reads/writes hit Studionet directly — no API keys, no server to secure |
-| **Tailwind CSS v4** | Rapid UI iteration, responsive layout, dark/light themes |
+| **TypeScript**         | Typed contract wrappers, fewer runtime errors in calldata                             |
+| **genlayer-js**        | Official SDK — `readContract`, `writeContract`, Studionet connect via MetaMask        |
+| **No custom backend**  | Reads/writes hit Studionet directly — no API keys, no server to secure                |
+| **Tailwind CSS v4**    | Rapid UI iteration, responsive layout, dark/light themes                              |
 
 ## Data flow
 

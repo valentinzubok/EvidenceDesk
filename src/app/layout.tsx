@@ -13,8 +13,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   title: "Evidence Desk — GenLayer dispute console",
-  description:
-    "Freeze web evidence and browse eq-principle criteria on GenLayer Studionet.",
+  description: "Freeze web evidence and browse eq-principle criteria on GenLayer Studionet.",
 };
 
 export const viewport: Viewport = {
@@ -34,7 +33,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <ToastProvider>
                 <div className="page-shell flex min-h-screen flex-col">
                   <Nav />
-                  <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8 pb-16">{children}</main>
+                  <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8 pb-16">
+                    {children}
+                  </main>
                 </div>
               </ToastProvider>
             </WalletProvider>

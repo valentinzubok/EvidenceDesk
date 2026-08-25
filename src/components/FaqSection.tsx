@@ -25,7 +25,10 @@ export function FaqSection() {
                 className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-white/5"
               >
                 <span className="text-sm font-medium text-zinc-200">{item.q}</span>
-                <span className="text-teal-400 transition-transform" style={{ transform: isOpen ? "rotate(180deg)" : "" }}>
+                <span
+                  className="text-teal-400 transition-transform"
+                  style={{ transform: isOpen ? "rotate(180deg)" : "" }}
+                >
                   ▾
                 </span>
               </button>

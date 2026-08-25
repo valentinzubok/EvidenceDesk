@@ -27,10 +27,22 @@ function FingerprintSvg({ className }: { className?: string }) {
         </filter>
       </defs>
       <g filter="url(#fp-glow)" stroke="url(#fp-grad)" strokeWidth="1.2" strokeLinecap="round">
-        <path className="fp-ridge fp-ridge-1" d="M100 20 C60 20 35 55 35 95 C35 130 55 155 100 155 C145 155 165 130 165 95 C165 55 140 20 100 20" />
-        <path className="fp-ridge fp-ridge-2" d="M100 45 C72 45 55 68 55 98 C55 122 72 138 100 138 C128 138 145 122 145 98 C145 68 128 45 100 45" />
-        <path className="fp-ridge fp-ridge-3" d="M100 68 C82 68 72 82 72 100 C72 115 82 125 100 125 C118 125 128 115 128 100 C128 82 118 68 100 68" />
-        <path className="fp-ridge fp-ridge-4" d="M100 88 C92 88 88 94 88 102 C88 108 92 112 100 112 C108 112 112 108 112 102 C112 94 108 88 100 88" />
+        <path
+          className="fp-ridge fp-ridge-1"
+          d="M100 20 C60 20 35 55 35 95 C35 130 55 155 100 155 C145 155 165 130 165 95 C165 55 140 20 100 20"
+        />
+        <path
+          className="fp-ridge fp-ridge-2"
+          d="M100 45 C72 45 55 68 55 98 C55 122 72 138 100 138 C128 138 145 122 145 98 C145 68 128 45 100 45"
+        />
+        <path
+          className="fp-ridge fp-ridge-3"
+          d="M100 68 C82 68 72 82 72 100 C72 115 82 125 100 125 C118 125 128 115 128 100 C128 82 118 68 100 68"
+        />
+        <path
+          className="fp-ridge fp-ridge-4"
+          d="M100 88 C92 88 88 94 88 102 C88 108 92 112 100 112 C108 112 112 108 112 102 C112 94 108 88 100 88"
+        />
         <path className="fp-ridge fp-ridge-5" d="M45 110 C30 140 28 175 40 210" />
         <path className="fp-ridge fp-ridge-6" d="M155 110 C170 140 172 175 160 210" />
         <path className="fp-ridge fp-ridge-7" d="M65 165 C58 190 62 220 78 240" />

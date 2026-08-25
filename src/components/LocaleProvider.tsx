@@ -39,10 +39,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = next === "ua" ? "uk" : "en";
   }, []);
 
-  const value = useMemo(
-    () => ({ locale, setLocale, t: messages[locale] }),
-    [locale, setLocale],
-  );
+  const value = useMemo(() => ({ locale, setLocale, t: messages[locale] }), [locale, setLocale]);
 
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 }

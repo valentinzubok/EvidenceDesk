@@ -157,7 +157,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       if (address && eth) void ensureStudionet(eth, address).then(setStudionetReady);
     };
 
-    eth.request({ method: "eth_accounts" })
+    eth
+      .request({ method: "eth_accounts" })
       .then((accounts) => {
         const list = accounts as string[];
         if (list[0]) void bindAccount(eth, list[0], localeRef.current);
@@ -173,9 +174,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     };
   }, [address, bindAccount, disconnect]);
 
-  const shortAddress = address
-    ? `${address.slice(0, 6)}…${address.slice(-4)}`
-    : null;
+  const shortAddress = address ? `${address.slice(0, 6)}…${address.slice(-4)}` : null;
 
   const value = useMemo(
     () => ({
