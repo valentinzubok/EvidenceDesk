@@ -27,8 +27,11 @@ export type Messages = {
     features: { title: string; desc: string }[];
     statsTitle: string;
     explorer: string;
-    stackTitle: string;
-    stackSubtitle: string;
+    storyEyebrow: string;
+    storyTitle: string;
+    storySubtitle: string;
+    storySteps: { title: string; desc: string }[];
+    storyQuote: string;
     whatWeDoTitle: string;
     whatWeDoIntro: string;
     problemTitle: string;
@@ -158,9 +161,18 @@ export const messages: Record<Locale, Messages> = {
       ],
       statsTitle: "Network snapshot",
       explorer: "View on Explorer",
-      stackTitle: "Built with",
-      stackSubtitle:
-        "Evidence Desk integrates GenLayer primitives and modern web tooling — every read/write goes through genlayer-js on Studionet.",
+      storyEyebrow: "The product",
+      storyTitle: "One desk for dispute evidence on GenLayer",
+      storySubtitle:
+        "Evidence Desk is a live console — not a mock. It reads and writes real contracts on Studionet, turning scattered URLs and criteria into a verifiable on-chain trail.",
+      storySteps: [
+        { title: "Capture", desc: "Paste HTTPS URLs into a case — web evidence enters the workflow." },
+        { title: "Freeze", desc: "EvidenceSnapshot stores hash + preview while the link still works." },
+        { title: "Criteria", desc: "Pick eq-principle templates from PromptRegistry by id." },
+        { title: "Prove", desc: "cross_check later — tamper flags if live pages drift." },
+      ],
+      storyQuote:
+        "“Disputes need more than screenshots. We freeze what was true, attach shared rules, and let the chain record what changed.”",
       whatWeDoTitle: "What we do",
       whatWeDoIntro:
         "We turn dispute evidence into an on-chain workflow: freeze URLs before they rot, attach shared criteria, and prove later if content changed.",
@@ -304,9 +316,18 @@ export const messages: Record<Locale, Messages> = {
       ],
       statsTitle: "Стан мережі",
       explorer: "Відкрити в Explorer",
-      stackTitle: "Побудовано на",
-      stackSubtitle:
-        "Evidence Desk інтегрує примітиви GenLayer та сучасний web-стек — усі read/write через genlayer-js на Studionet.",
+      storyEyebrow: "Про продукт",
+      storyTitle: "Один desk для доказів у спорах на GenLayer",
+      storySubtitle:
+        "Evidence Desk — жива консоль, не mock. Читає та пише в реальні контракти на Studionet, перетворюючи розрізнені URL та критерії на перевірений on-chain слід.",
+      storySteps: [
+        { title: "Захопити", desc: "Додайте HTTPS URL у кейс — web-докази входять у workflow." },
+        { title: "Заморозити", desc: "EvidenceSnapshot зберігає хеш + preview, поки посилання ще працює." },
+        { title: "Критерії", desc: "Оберіть eq-principle шаблони з PromptRegistry за id." },
+        { title: "Довести", desc: "Пізніше cross_check — прапор підміни, якщо сторінки змінились." },
+      ],
+      storyQuote:
+        "«Спорам потрібно більше, ніж скріншоти. Ми фіксуємо правду, додаємо спільні правила — і ланцюг записує, що змінилось.»",
       whatWeDoTitle: "Що ми робимо",
       whatWeDoIntro:
         "Перетворюємо докази у спорах на on-chain workflow: заморожуємо URL до «гниття», підключаємо спільні критерії та доводимо зміни контенту пізніше.",

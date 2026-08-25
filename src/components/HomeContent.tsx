@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HeroVisual } from "@/components/HeroVisual";
 import { PartnershipSection } from "@/components/PartnershipSection";
-import { TechStack } from "@/components/TechStack";
+import { ProjectStory } from "@/components/ProjectStory";
 import { GlassCard, PageHero, StatCard } from "@/components/ui";
 import {
   EXPLORER_REGISTRY,
@@ -75,7 +75,7 @@ export function HomeContent() {
         </div>
       </section>
 
-      <TechStack />
+      <ProjectStory />
 
       {/* What we do */}
       <section className="animate-fade-up space-y-5">

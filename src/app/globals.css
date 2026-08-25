@@ -322,7 +322,12 @@ button:disabled {
   .hero-pulse-ring,
   .animate-float,
   .animate-fade-up,
-  .animate-shimmer {
+  .animate-shimmer,
+  .story-flow-path,
+  .story-step-node,
+  .story-step-glow,
+  .story-particle,
+  .story-mobile-connector {
     animation: none !important;
   }
 }
@@ -331,6 +336,84 @@ button:disabled {
   .hero-hash-ring {
     inset: 8%;
   }
+}
+
+/* ── Project story pipeline ── */
+.story-aurora {
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(45, 212, 191, 0.12), transparent),
+    radial-gradient(ellipse 50% 40% at 80% 60%, rgba(167, 139, 250, 0.08), transparent);
+}
+
+.story-pipeline {
+  min-height: 140px;
+  padding: 0.5rem 0;
+}
+
+.story-flow-path {
+  animation: story-dash 2s linear infinite;
+}
+
+@keyframes story-dash {
+  to { stroke-dashoffset: -40; }
+}
+
+.story-step {
+  animation: fade-up 0.6s ease-out backwards;
+}
+
+.story-step-node {
+  animation: story-node-float 4s ease-in-out infinite;
+}
+
+.story-step:nth-child(2) .story-step-node { animation-delay: 0.5s; }
+.story-step:nth-child(3) .story-step-node { animation-delay: 1s; }
+.story-step:nth-child(4) .story-step-node { animation-delay: 1.5s; }
+
+@keyframes story-node-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.story-step-glow {
+  animation: story-glow-pulse 3s ease-in-out infinite;
+  box-shadow: inset 0 0 20px rgba(45, 212, 191, 0.15);
+}
+
+@keyframes story-glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.story-particle {
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5eead4;
+  box-shadow: 0 0 10px #2dd4bf;
+  animation: story-particle-run 4s linear infinite;
+}
+
+.story-particle-1 { left: 10%; animation-delay: 0s; }
+.story-particle-2 { left: 10%; animation-delay: 1.3s; }
+.story-particle-3 { left: 10%; animation-delay: 2.6s; }
+
+@keyframes story-particle-run {
+  0% { left: 8%; opacity: 0; transform: translateY(-50%) scale(0.5); }
+  10% { opacity: 1; transform: translateY(-50%) scale(1); }
+  90% { opacity: 1; }
+  100% { left: 88%; opacity: 0; transform: translateY(-50%) scale(0.5); }
+}
+
+.story-mobile-connector {
+  animation: story-connector-pulse 2s ease-in-out infinite;
+}
+
+@keyframes story-connector-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
 }
 
 /* ── Background orbs ── */
