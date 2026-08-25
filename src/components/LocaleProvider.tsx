@@ -26,13 +26,17 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem(LOCALE_KEY);
-    if (saved === "en" || saved === "ru") setLocaleState(saved);
+    if (saved === "uk") setLocaleState("uk");
+    else if (saved === "ru") {
+      setLocaleState("uk");
+      localStorage.setItem(LOCALE_KEY, "uk");
+    }
   }, []);
 
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next);
     localStorage.setItem(LOCALE_KEY, next);
-    document.documentElement.lang = next;
+    document.documentElement.lang = next === "uk" ? "uk" : "en";
   }, []);
 
   const value = useMemo(

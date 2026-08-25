@@ -38,7 +38,7 @@ GenLayer is central: all reads/writes go through **genlayer-js** on **Studionet*
 - **Criteria** — top templates with card previews, get_body, copy to clipboard
 - **Wallet** — MetaMask connect + Studionet via `client.connect()`
 - **Recent & favorites** — local history for quick case navigation
-- **i18n** — English / Russian UI toggle
+- **i18n** — English / Ukrainian UI toggle
 - **Explorer links** — Studionet contract pages
 
 ---
@@ -75,7 +75,7 @@ Open http://localhost:3000
 
 1. Browse **Cases** / **Criteria** without wallet (read-only)
 2. Click **Connect Wallet** for transactions
-3. Toggle **EN / RU** in the header
+3. Toggle **EN / UK** in the header
 
 ### Environment variables
 

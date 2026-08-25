@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { formatWalletError, formatReadError } from "@/lib/errors";
 import { markdownPreview, parseJson } from "@/lib/preview";
+import { isValidCaseId, parseUrlsJson } from "@/lib/validate";
 
 describe("parseJson", () => {
   it("parses valid JSON", () => {
@@ -30,7 +31,25 @@ describe("formatWalletError", () => {
 
 describe("formatReadError", () => {
   it("returns localized read error", () => {
-    expect(formatReadError(new Error("x"), "ru")).toMatch(/Не удалось/);
+    expect(formatReadError(new Error("x"), "uk")).toMatch(/Не вдалося/);
     expect(formatReadError(new Error("x"), "en")).toMatch(/Could not load/);
+  });
+});
+
+describe("validate", () => {
+  it("validates case id", () => {
+    expect(isValidCaseId("demo-desk-1")).toBe(true);
+    expect(isValidCaseId("bad id!")).toBe(false);
+  });
+
+  it("parses https urls json", () => {
+    const r = parseUrlsJson('["https://example.com/a"]');
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.urls[0]).toContain("https://");
+  });
+
+  it("rejects http urls", () => {
+    const r = parseUrlsJson('["http://example.com"]');
+    expect(r.ok).toBe(false);
   });
 });
