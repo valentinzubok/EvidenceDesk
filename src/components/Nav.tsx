@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation";
 import { DEFAULT_CHAIN, LIVE_APP_URL } from "@/lib/config";
 import { useLocale } from "./LocaleProvider";
 import { useWallet } from "./WalletProvider";
+import { useTheme } from "./ThemeProvider";
 import { WalletButton } from "./WalletButton";
 
 export function Nav() {
   const pathname = usePathname();
   const { t, locale, setLocale } = useLocale();
+  const { theme, toggleTheme } = useTheme();
   const { address } = useWallet();
 
   const links = [
@@ -59,6 +61,15 @@ export function Nav() {
           {!address ? (
             <span className="badge-neutral hidden sm:inline">{t.nav.readOnly}</span>
           ) : null}
+
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="btn-icon"
+            title={theme === "dark" ? t.theme.light : t.theme.dark}
+          >
+            {theme === "dark" ? "☀" : "☾"}
+          </button>
 
           <div className="flex rounded-lg border border-white/10 bg-black/30 p-0.5 text-xs">
             {(["en", "ua"] as const).map((code) => (

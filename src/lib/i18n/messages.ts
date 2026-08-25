@@ -85,6 +85,10 @@ export type Messages = {
     preview: string;
     hash: string;
     url: string;
+    crossCheckFetching: string;
+    crossCheckSubmitting: string;
+    crossCheckFailed: string;
+    rateLimited: string;
   };
   criteria: {
     title: string;
@@ -101,6 +105,12 @@ export type Messages = {
     scoreUses: string;
     search: string;
     emptyBody: string;
+    filterTag: string;
+    allTags: string;
+    sortBy: string;
+    sortScore: string;
+    sortUses: string;
+    sortRecent: string;
   };
   wallet: {
     title: string;
@@ -112,6 +122,27 @@ export type Messages = {
     studionet: string;
   };
   common: { loading: string; error: string; retry: string };
+  theme: { light: string; dark: string };
+  wizard: {
+    title: string;
+    stepOf: string;
+    stepId: string;
+    stepUrls: string;
+    stepReview: string;
+    next: string;
+    back: string;
+    cancel: string;
+    add: string;
+    noUrls: string;
+    idHint: string;
+    reviewHint: string;
+    openWizard: string;
+  };
+  faq: {
+    title: string;
+    subtitle: string;
+    items: { q: string; a: string }[];
+  };
   validation: {
     invalid_json: string;
     empty_array: string;
@@ -241,6 +272,10 @@ export const messages: Record<Locale, Messages> = {
       preview: "Preview",
       hash: "Hash",
       url: "URL",
+      crossCheckFetching: "Fetching live pages on Studionet…",
+      crossCheckSubmitting: "Submitting cross_check…",
+      crossCheckFailed: "cross_check failed",
+      rateLimited: "Rate limit: wait {sec}s before another open_case (anti-spam)",
     },
     criteria: {
       title: "Criteria Templates",
@@ -258,6 +293,12 @@ export const messages: Record<Locale, Messages> = {
       scoreUses: "score {score} · uses {uses}",
       search: "Search templates…",
       emptyBody: "(empty or deprecated)",
+      filterTag: "Filter by tag",
+      allTags: "All tags",
+      sortBy: "Sort by",
+      sortScore: "Score",
+      sortUses: "Uses",
+      sortRecent: "List order",
     },
     wallet: {
       title: "Connect MetaMask",
@@ -269,6 +310,48 @@ export const messages: Record<Locale, Messages> = {
       studionet: "Studionet (GenLayer Studio)",
     },
     common: { loading: "Loading…", error: "Something went wrong", retry: "Retry" },
+    theme: { light: "Light", dark: "Dark" },
+    wizard: {
+      title: "New evidence case",
+      stepOf: "Step {n} of {total}",
+      stepId: "Case ID",
+      stepUrls: "Evidence URLs",
+      stepReview: "Review & submit",
+      next: "Next",
+      back: "Back",
+      cancel: "Cancel",
+      add: "Add",
+      noUrls: "Add at least one HTTPS URL",
+      idHint: "Use letters, numbers, underscore, hyphen — max 64 chars.",
+      reviewHint: "Submitting calls open_case on EvidenceSnapshot (Studionet).",
+      openWizard: "Open case wizard",
+    },
+    faq: {
+      title: "FAQ",
+      subtitle: "Common questions about wallet, hashes, and transactions.",
+      items: [
+        {
+          q: "MetaMask won't connect?",
+          a: "Install MetaMask, refresh the page, click Connect Wallet. genlayer-js adds Studionet automatically — you don't need to add the network manually.",
+        },
+        {
+          q: "Why did cross_check fail or take long?",
+          a: "cross_check fetches live URLs on Studionet. Slow or blocked sites may timeout. Wait for the spinner, then use Retry. Check the case detail for tampered flags after success.",
+        },
+        {
+          q: "Hash mismatch / unexpected tampered flag?",
+          a: "Live page content changed since open_case — that's the point. CDN updates, A/B tests, and cookie banners can alter HTML. Re-open a case if you need a fresh snapshot.",
+        },
+        {
+          q: "Transaction rejected or gas error?",
+          a: "Studionet is gasless via Studio, but MetaMask must approve the request. Rejections mean you cancelled. Ensure you're connected and retry.",
+        },
+        {
+          q: "Can I browse without a wallet?",
+          a: "Yes — Cases and Criteria are read-only without MetaMask. Connect only for open_case and cross_check.",
+        },
+      ],
+    },
     validation: {
       invalid_json: "Must be valid JSON array",
       empty_array: "Add at least one URL",
@@ -396,6 +479,10 @@ export const messages: Record<Locale, Messages> = {
       preview: "Превʼю",
       hash: "Хеш",
       url: "URL",
+      crossCheckFetching: "Завантаження live-сторінок на Studionet…",
+      crossCheckSubmitting: "Надсилання cross_check…",
+      crossCheckFailed: "cross_check не вдався",
+      rateLimited: "Ліміт: зачекайте {sec}с перед наступним open_case (anti-spam)",
     },
     criteria: {
       title: "Шаблони критеріїв",
@@ -413,6 +500,12 @@ export const messages: Record<Locale, Messages> = {
       scoreUses: "score {score} · uses {uses}",
       search: "Пошук шаблонів…",
       emptyBody: "(порожньо або застаріло)",
+      filterTag: "Фільтр за тегом",
+      allTags: "Усі теги",
+      sortBy: "Сортування",
+      sortScore: "Score",
+      sortUses: "Uses",
+      sortRecent: "Порядок списку",
     },
     wallet: {
       title: "Підключити MetaMask",
@@ -424,6 +517,48 @@ export const messages: Record<Locale, Messages> = {
       studionet: "Studionet (GenLayer Studio)",
     },
     common: { loading: "Завантаження…", error: "Щось пішло не так", retry: "Повторити" },
+    theme: { light: "Світла", dark: "Темна" },
+    wizard: {
+      title: "Новий кейс доказів",
+      stepOf: "Крок {n} з {total}",
+      stepId: "ID кейсу",
+      stepUrls: "URL доказів",
+      stepReview: "Перевірка та submit",
+      next: "Далі",
+      back: "Назад",
+      cancel: "Скасувати",
+      add: "Додати",
+      noUrls: "Додайте хоча б один HTTPS URL",
+      idHint: "Літери, цифри, _, - — макс. 64 символи.",
+      reviewHint: "Submit викликає open_case на EvidenceSnapshot (Studionet).",
+      openWizard: "Майстер нового кейсу",
+    },
+    faq: {
+      title: "FAQ",
+      subtitle: "Поширені питання про гаманець, хеші та транзакції.",
+      items: [
+        {
+          q: "MetaMask не підключається?",
+          a: "Встановіть MetaMask, оновіть сторінку, натисніть Підключити. genlayer-js додасть Studionet автоматично.",
+        },
+        {
+          q: "Чому cross_check довго або не вдався?",
+          a: "cross_check завантажує live URL на Studionet. Повільні сайти можуть таймаутити. Дочекайтесь спінера і натисніть Повторити.",
+        },
+        {
+          q: "Hash mismatch / несподіваний tampered?",
+          a: "Контент сторінки змінився після open_case. CDN, A/B-тести та банери змінюють HTML. Відкрийте кейс знову для нового знімка.",
+        },
+        {
+          q: "Транзакцію відхилено або gas error?",
+          a: "Studionet gasless через Studio, але MetaMask має підтвердити запит. Відхилення = скасували ви. Підключіться і повторіть.",
+        },
+        {
+          q: "Чи можна без гаманця?",
+          a: "Так — Cases і Criteria read-only без MetaMask. Гаманець лише для open_case та cross_check.",
+        },
+      ],
+    },
     validation: {
       invalid_json: "Має бути валідний JSON-масив",
       empty_array: "Додайте хоча б один URL",

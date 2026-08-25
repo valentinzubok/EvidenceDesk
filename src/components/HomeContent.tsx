@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HeroVisual } from "@/components/HeroVisual";
+import { FaqSection } from "@/components/FaqSection";
 import { PartnershipSection } from "@/components/PartnershipSection";
 import { ProjectStory } from "@/components/ProjectStory";
 import { GlassCard, PageHero, StatCard } from "@/components/ui";
@@ -202,6 +203,8 @@ export function HomeContent() {
       </GlassCard>
 
       <PartnershipSection />
+
+      <FaqSection />
     </div>
   );
 }

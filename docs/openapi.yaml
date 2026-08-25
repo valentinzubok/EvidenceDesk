@@ -1,0 +1,118 @@
+openapi: 3.1.0
+info:
+  title: Evidence Desk — GenLayer contract surface
+  description: |
+    Conceptual API for Evidence Desk integrations.
+    Calls are made via genlayer-js against Studionet contracts — not HTTP REST.
+    See docs/ARCHITECTURE.md for the Next.js dApp stack.
+  version: 1.0.0
+  contact:
+    name: Evidence Desk
+    url: https://github.com/valentinzubok/EvidenceDesk
+
+servers:
+  - url: https://studio.genlayer.com
+    description: Studionet (via genlayer-js)
+
+paths:
+  /EvidenceSnapshot/list_cases:
+    get:
+      summary: List all case IDs
+      operationId: listCases
+      responses:
+        "200":
+          description: JSON array of case_id strings
+
+  /EvidenceSnapshot/get_case:
+    get:
+      summary: Get case detail
+      operationId: getCase
+      parameters:
+        - name: case_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Case JSON with items, hashes, tampered flag
+
+  /EvidenceSnapshot/open_case:
+    post:
+      summary: Open a new evidence case (wallet required)
+      operationId: openCase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [case_id, urls_json]
+              properties:
+                case_id:
+                  type: string
+                  pattern: '^[a-zA-Z0-9_-]{1,64}$'
+                urls_json:
+                  type: string
+                  description: JSON array of HTTPS URLs
+      responses:
+        "200":
+          description: Transaction hash
+
+  /EvidenceSnapshot/cross_check:
+    post:
+      summary: Re-fetch URLs and flag tampering (wallet required)
+      operationId: crossCheck
+      parameters:
+        - name: case_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Transaction hash
+
+  /PromptRegistry/top:
+    get:
+      summary: Top criteria templates
+      operationId: topTemplates
+      parameters:
+        - name: offset
+          in: query
+          schema:
+            type: string
+            default: "0"
+        - name: limit
+          in: query
+          schema:
+            type: string
+            default: "20"
+      responses:
+        "200":
+          description: JSON with items array (id, title, score, uses, tags)
+
+  /PromptRegistry/get_body:
+    get:
+      summary: Get criteria markdown body by template id
+      operationId: getBody
+      parameters:
+        - name: template_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Criteria text (markdown)
+
+components:
+  securitySchemes:
+    MetaMask:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Wallet signature via genlayer-js writeContract
+
+security:
+  - {}

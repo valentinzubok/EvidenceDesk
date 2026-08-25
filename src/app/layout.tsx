@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Background } from "@/components/Background";
 import { LocaleProvider } from "@/components/LocaleProvider";
 import { Nav } from "@/components/Nav";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { ToastProvider } from "@/components/ToastProvider";
 import { WalletProvider } from "@/components/WalletProvider";
 import "./globals.css";
@@ -28,14 +29,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Background />
         <LocaleProvider>
-          <WalletProvider>
-            <ToastProvider>
-              <div className="page-shell flex min-h-screen flex-col">
-                <Nav />
-                <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8 pb-16">{children}</main>
-              </div>
-            </ToastProvider>
-          </WalletProvider>
+          <ThemeProvider>
+            <WalletProvider>
+              <ToastProvider>
+                <div className="page-shell flex min-h-screen flex-col">
+                  <Nav />
+                  <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8 pb-16">{children}</main>
+                </div>
+              </ToastProvider>
+            </WalletProvider>
+          </ThemeProvider>
         </LocaleProvider>
       </body>
     </html>

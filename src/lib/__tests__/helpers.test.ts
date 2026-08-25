@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { formatWalletError, formatReadError } from "@/lib/errors";
 import { markdownPreview, parseJson } from "@/lib/preview";
 import { isValidCaseId, parseUrlsJson } from "@/lib/validate";
+import { canOpenCase, recordOpenCase } from "@/lib/rateLimit";
 
 describe("parseJson", () => {
   it("parses valid JSON", () => {
@@ -51,5 +52,19 @@ describe("validate", () => {
   it("rejects http urls", () => {
     const r = parseUrlsJson('["http://example.com"]');
     expect(r.ok).toBe(false);
+  });
+});
+
+describe("rateLimit", () => {
+  it("allows first open_case", () => {
+    expect(canOpenCase("0xabc").allowed).toBe(true);
+  });
+
+  it("records and limits bursts", () => {
+    const addr = "0xtest123";
+    for (let i = 0; i < 5; i++) recordOpenCase(addr);
+    const r = canOpenCase(addr);
+    expect(r.allowed).toBe(false);
+    expect(r.retryAfterSec).toBeGreaterThan(0);
   });
 });

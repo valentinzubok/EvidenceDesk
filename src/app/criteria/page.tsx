@@ -30,6 +30,8 @@ export default function CriteriaPage() {
   const [message, setMessage] = useState("");
   const [messageTone, setMessageTone] = useState<"warn" | "ok">("warn");
   const [search, setSearch] = useState("");
+  const [tagFilter, setTagFilter] = useState("");
+  const [sortBy, setSortBy] = useState<"score" | "uses" | "recent">("score");
 
   const loadPreviews = useCallback(async (items: CriteriaTemplate[]) => {
     const slice = items.slice(0, 10);
@@ -75,16 +77,30 @@ export default function CriteriaPage() {
       .finally(() => setBodyLoading(false));
   }, [selectedId]);
 
+  const allTags = useMemo(() => {
+    const set = new Set<string>();
+    templates.forEach((t) => t.tags?.forEach((tag) => set.add(tag)));
+    return [...set].sort();
+  }, [templates]);
+
   const filtered = useMemo(() => {
+    let list = [...templates];
     const q = search.trim().toLowerCase();
-    if (!q) return templates;
-    return templates.filter(
-      (item) =>
-        item.id.toLowerCase().includes(q) ||
-        item.title.toLowerCase().includes(q) ||
-        item.tags?.some((tag) => tag.toLowerCase().includes(q)),
-    );
-  }, [templates, search]);
+    if (q) {
+      list = list.filter(
+        (item) =>
+          item.id.toLowerCase().includes(q) ||
+          item.title.toLowerCase().includes(q) ||
+          item.tags?.some((tag) => tag.toLowerCase().includes(q)),
+      );
+    }
+    if (tagFilter) {
+      list = list.filter((item) => item.tags?.includes(tagFilter));
+    }
+    if (sortBy === "score") list.sort((a, b) => b.score - a.score);
+    else if (sortBy === "uses") list.sort((a, b) => b.uses - a.uses);
+    return list;
+  }, [templates, search, tagFilter, sortBy]);
 
   async function copyBody() {
     if (!body) return;
@@ -114,6 +130,35 @@ export default function CriteriaPage() {
           </button>
         </div>
         <SearchInput value={search} onChange={setSearch} placeholder={t.criteria.search} />
+        <div className="flex flex-wrap gap-3">
+          <label className="flex flex-col gap-1 text-xs text-zinc-500">
+            {t.criteria.filterTag}
+            <select
+              value={tagFilter}
+              onChange={(e) => setTagFilter(e.target.value)}
+              className="!w-auto min-w-[140px] !py-2 text-sm"
+            >
+              <option value="">{t.criteria.allTags}</option>
+              {allTags.map((tag) => (
+                <option key={tag} value={tag}>
+                  {tag}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="flex flex-col gap-1 text-xs text-zinc-500">
+            {t.criteria.sortBy}
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as "score" | "uses" | "recent")}
+              className="!w-auto min-w-[140px] !py-2 text-sm"
+            >
+              <option value="score">{t.criteria.sortScore}</option>
+              <option value="uses">{t.criteria.sortUses}</option>
+              <option value="recent">{t.criteria.sortRecent}</option>
+            </select>
+          </label>
+        </div>
         {loading && templates.length === 0 ? (
           <Spinner label={t.criteria.loading} />
         ) : filtered.length === 0 ? (

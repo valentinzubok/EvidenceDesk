@@ -148,6 +148,13 @@ Production: https://evidence-desk-chi.valandelon.com
 
 Submit under **Projects** — see [SUBMIT.md](SUBMIT.md).
 
+## Docs
+
+- [Architecture](docs/ARCHITECTURE.md) — stack & design decisions
+- [Roadmap](docs/ROADMAP.md) — factory, GraphQL, RBAC (planned)
+- [OpenAPI](docs/openapi.yaml) — contract surface for integrators
+- [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
+
 ---
 
 ## License
