@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Background } from "@/components/Background";
 import { LocaleProvider } from "@/components/LocaleProvider";
@@ -16,6 +16,12 @@ export const metadata: Metadata = {
     "Freeze web evidence and browse eq-principle criteria on GenLayer Studionet.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -26,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ToastProvider>
               <div className="page-shell flex min-h-screen flex-col">
                 <Nav />
-                <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 pb-16">{children}</main>
+                <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8 pb-16">{children}</main>
               </div>
             </ToastProvider>
           </WalletProvider>

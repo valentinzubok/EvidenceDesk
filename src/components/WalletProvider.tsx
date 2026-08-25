@@ -82,7 +82,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     setStudionetReady(ready);
     if (!ready) {
       setError(
-        loc === "uk"
+        loc === "ua"
           ? "Studionet не підключено. Спробуйте ще раз."
           : "Studionet not connected. Try again.",
       );
@@ -137,7 +137,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("evidence-desk:locale");
-    if (saved === "uk" || saved === "ru") localeRef.current = "uk";
+    if (saved === "ua" || saved === "uk" || saved === "ru") localeRef.current = "ua";
   }, []);
 
   useEffect(() => {

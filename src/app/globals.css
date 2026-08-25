@@ -240,6 +240,99 @@ button:disabled {
 .stagger-3 { animation-delay: 0.15s; }
 .stagger-4 { animation-delay: 0.2s; }
 
+/* ── Hero visual (fingerprint + hash) ── */
+.hero-visual-frame {
+  contain: layout style paint;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(45, 212, 191, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 212, 191, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.hero-scan-beam {
+  animation: hero-scan 3.5s ease-in-out infinite;
+}
+
+@keyframes hero-scan {
+  0%, 100% { transform: translateY(-100%); opacity: 0.3; }
+  50% { transform: translateY(280%); opacity: 0.8; }
+}
+
+.hero-hash-ring {
+  position: absolute;
+  inset: 4%;
+  animation: hero-orbit-spin 24s linear infinite;
+  opacity: 0.85;
+}
+
+@keyframes hero-orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+.hero-orbit-text {
+  letter-spacing: 0.15em;
+}
+
+.hero-fingerprint .fp-ridge {
+  opacity: 0.85;
+  animation: fp-pulse 4s ease-in-out infinite;
+}
+
+.hero-fingerprint .fp-ridge-2 { animation-delay: 0.3s; }
+.hero-fingerprint .fp-ridge-3 { animation-delay: 0.6s; }
+.hero-fingerprint .fp-ridge-4 { animation-delay: 0.9s; }
+.hero-fingerprint .fp-ridge-5 { animation-delay: 1.2s; }
+.hero-fingerprint .fp-ridge-6 { animation-delay: 1.5s; }
+
+@keyframes fp-pulse {
+  0%, 100% { opacity: 0.5; stroke-width: 1; }
+  50% { opacity: 1; stroke-width: 1.4; }
+}
+
+.hero-fingerprint .fp-core {
+  animation: fp-core-glow 2s ease-in-out infinite;
+}
+
+@keyframes fp-core-glow {
+  0%, 100% { opacity: 0.6; r: 3; }
+  50% { opacity: 1; filter: drop-shadow(0 0 6px #5eead4); }
+}
+
+.hero-pulse-ring {
+  animation: hero-ring-expand 3s ease-out infinite;
+}
+
+.hero-pulse-ring-2 {
+  animation-delay: 1.5s;
+}
+
+@keyframes hero-ring-expand {
+  0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scan-beam,
+  .hero-hash-ring,
+  .hero-fingerprint .fp-ridge,
+  .hero-fingerprint .fp-core,
+  .hero-pulse-ring,
+  .animate-float,
+  .animate-fade-up,
+  .animate-shimmer {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-hash-ring {
+    inset: 8%;
+  }
+}
+
 /* ── Background orbs ── */
 .bg-orb {
   position: absolute;

@@ -1,4 +1,4 @@
-export type Locale = "en" | "uk";
+export type Locale = "en" | "ua";
 
 export type Messages = {
   nav: {
@@ -27,6 +27,26 @@ export type Messages = {
     features: { title: string; desc: string }[];
     statsTitle: string;
     explorer: string;
+    stackTitle: string;
+    stackSubtitle: string;
+    whatWeDoTitle: string;
+    whatWeDoIntro: string;
+    problemTitle: string;
+    problemPoints: string[];
+    solutionTitle: string;
+    solutionPoints: string[];
+    forWhomTitle: string;
+    forWhom: string[];
+    partnershipEyebrow: string;
+    partnershipTitle: string;
+    partnershipBody: string;
+    partnershipPurpose: string;
+    partnerDesc: {
+      genlayer: string;
+      snapshot: string;
+      registry: string;
+      portal: string;
+    };
   };
   cases: {
     title: string;
@@ -138,6 +158,42 @@ export const messages: Record<Locale, Messages> = {
       ],
       statsTitle: "Network snapshot",
       explorer: "View on Explorer",
+      stackTitle: "Built with",
+      stackSubtitle:
+        "Evidence Desk integrates GenLayer primitives and modern web tooling — every read/write goes through genlayer-js on Studionet.",
+      whatWeDoTitle: "What we do",
+      whatWeDoIntro:
+        "We turn dispute evidence into an on-chain workflow: freeze URLs before they rot, attach shared criteria, and prove later if content changed.",
+      problemTitle: "The problem",
+      problemPoints: [
+        "Links break, pages change, and screenshots alone are easy to dispute.",
+        "Teams reuse criteria in silos — no shared, verifiable templates.",
+        "Off-chain evidence is hard to audit in decentralized disputes.",
+      ],
+      solutionTitle: "Our solution",
+      solutionPoints: [
+        "EvidenceSnapshot hashes live URL content at open_case time.",
+        "PromptRegistry stores eq-principle criteria others can reuse by id.",
+        "cross_check re-fetches pages and flags tampering on Studionet.",
+      ],
+      forWhomTitle: "Who it's for",
+      forWhom: [
+        "Builders shipping GenLayer dispute & adjudication products",
+        "Communities running Portal bounties and ecosystem demos",
+        "Anyone proving web evidence integrity without a centralized notary",
+      ],
+      partnershipEyebrow: "Ecosystem partnership",
+      partnershipTitle: "Made for the GenLayer ecosystem",
+      partnershipBody:
+        "Evidence Desk is not a standalone toy — it composes two ecosystem primitives into one product surface. It was built to demonstrate real GenLayer workflows for Portal Projects and to give builders a ready-made console for evidence + criteria.",
+      partnershipPurpose:
+        "Purpose: show how Intelligent Contracts, shared criteria, and a modern dApp fit together — so disputes can be resolved with frozen evidence and transparent rules, not screenshots in a chat.",
+      partnerDesc: {
+        genlayer: "Layer for Intelligent Contracts — LLM adjudication on-chain via Studionet.",
+        snapshot: "Primitive contract: open_case, frozen hashes, cross_check tamper detection.",
+        registry: "Shared eq-principle templates — publish, vote, get_body by template id.",
+        portal: "GenLayer Foundation Portal — ecosystem contributions & builder rewards.",
+      },
     },
     cases: {
       title: "Evidence Cases",
@@ -210,7 +266,7 @@ export const messages: Record<Locale, Messages> = {
       url_too_long: "URL too long (max 2048 chars)",
     },
   },
-  uk: {
+  ua: {
     nav: {
       home: "Головна",
       cases: "Кейси",
@@ -248,6 +304,42 @@ export const messages: Record<Locale, Messages> = {
       ],
       statsTitle: "Стан мережі",
       explorer: "Відкрити в Explorer",
+      stackTitle: "Побудовано на",
+      stackSubtitle:
+        "Evidence Desk інтегрує примітиви GenLayer та сучасний web-стек — усі read/write через genlayer-js на Studionet.",
+      whatWeDoTitle: "Що ми робимо",
+      whatWeDoIntro:
+        "Перетворюємо докази у спорах на on-chain workflow: заморожуємо URL до «гниття», підключаємо спільні критерії та доводимо зміни контенту пізніше.",
+      problemTitle: "Проблема",
+      problemPoints: [
+        "Посилання ламаються, сторінки змінюються — скріншоти легко оскаржити.",
+        "Команди дублюють критерії — немає спільних перевірених шаблонів.",
+        "Off-chain докази важко аудитувати в децентралізованих спорах.",
+      ],
+      solutionTitle: "Наше рішення",
+      solutionPoints: [
+        "EvidenceSnapshot хешує контент URL під час open_case.",
+        "PromptRegistry зберігає eq-principle критерії для повторного використання за id.",
+        "cross_check повторно завантажує сторінки та позначає підміну на Studionet.",
+      ],
+      forWhomTitle: "Для кого",
+      forWhom: [
+        "Білдери dispute/adjudication продуктів на GenLayer",
+        "Спільнота Portal — баунті та демо екосистеми",
+        "Усі, хто доводить цілісність web-доказів без централізованого нотаріуса",
+      ],
+      partnershipEyebrow: "Партнерство в екосистемі",
+      partnershipTitle: "Створено для екосистеми GenLayer",
+      partnershipBody:
+        "Evidence Desk — не ізольований демо-проєкт. Він поєднує два примітиви екосистеми в одному продукті. Зроблено для Portal Projects і як готовa консоль «докази + критерії» для білдерів.",
+      partnershipPurpose:
+        "Мета: показати, як Intelligent Contracts, спільні критерії та сучасний dApp працюють разом — щоб спори вирішувались за замороженими доказами та прозорими правилами, а не скріншотами в чаті.",
+      partnerDesc: {
+        genlayer: "Шар Intelligent Contracts — LLM-адjudication на ланцюгу через Studionet.",
+        snapshot: "Примітив: open_case, заморожені хеші, cross_check для виявлення підміни.",
+        registry: "Спільні eq-principle шаблони — publish, vote, get_body за id.",
+        portal: "GenLayer Foundation Portal — внески в екосистему та нагороди білдерам.",
+      },
     },
     cases: {
       title: "Кейси доказів",

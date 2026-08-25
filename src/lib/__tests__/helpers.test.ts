@@ -31,7 +31,7 @@ describe("formatWalletError", () => {
 
 describe("formatReadError", () => {
   it("returns localized read error", () => {
-    expect(formatReadError(new Error("x"), "uk")).toMatch(/Не вдалося/);
+    expect(formatReadError(new Error("x"), "ua")).toMatch(/Не вдалося/);
     expect(formatReadError(new Error("x"), "en")).toMatch(/Could not load/);
   });
 });

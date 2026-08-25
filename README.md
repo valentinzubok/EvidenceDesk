@@ -38,7 +38,7 @@ GenLayer is central: all reads/writes go through **genlayer-js** on **Studionet*
 - **Criteria** — top templates with card previews, get_body, copy to clipboard
 - **Wallet** — MetaMask connect + Studionet via `client.connect()`
 - **Recent & favorites** — local history for quick case navigation
-- **i18n** — English / Ukrainian UI toggle
+- **i18n** — English / Ukrainian (UA) UI toggle
 - **Explorer links** — Studionet contract pages
 
 ---
@@ -75,7 +75,7 @@ Open http://localhost:3000
 
 1. Browse **Cases** / **Criteria** without wallet (read-only)
 2. Click **Connect Wallet** for transactions
-3. Toggle **EN / UK** in the header
+3. Toggle **EN / UA** in the header
 
 ### Environment variables
 
@@ -94,9 +94,7 @@ cp .env.example .env.local
 
 ## UI preview
 
-<p align="center">
-  <img src="public/cover.png" alt="Evidence Desk UI" width="720" />
-</p>
+The home hero uses a lightweight CSS/SVG fingerprint animation (no heavy image) — optimized for mobile and desktop.
 
 Screens: **Home** → workflow overview · **Cases** → open_case / cross_check · **Criteria** → template cards + copy
 

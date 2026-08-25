@@ -61,7 +61,7 @@ export function Nav() {
           ) : null}
 
           <div className="flex rounded-lg border border-white/10 bg-black/30 p-0.5 text-xs">
-            {(["en", "uk"] as const).map((code) => (
+            {(["en", "ua"] as const).map((code) => (
               <button
                 key={code}
                 type="button"
