@@ -1,40 +1,55 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { REGISTRY_ADDRESS } from "@/lib/config";
-import { readContract } from "@/lib/genlayer";
-
-type TemplateRow = {
-  id: string;
-  title: string;
-  score: number;
-  uses: number;
-  tags?: string[];
-};
+import { Alert, LoadingOverlay, Spinner } from "@/components/ui";
+import { useLocale } from "@/components/LocaleProvider";
+import { getCriteriaBody, listTopTemplates } from "@/lib/contracts";
+import { formatReadError } from "@/lib/errors";
+import { tScoreUses } from "@/lib/i18n/messages";
+import { markdownPreview } from "@/lib/preview";
+import type { CriteriaTemplate } from "@/lib/types";
 
 export default function CriteriaPage() {
-  const [templates, setTemplates] = useState<TemplateRow[]>([]);
+  const { t, locale } = useLocale();
+  const [templates, setTemplates] = useState<CriteriaTemplate[]>([]);
+  const [previews, setPreviews] = useState<Record<string, string>>({});
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
+  const [bodyLoading, setBodyLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [messageTone, setMessageTone] = useState<"warn" | "ok">("warn");
+
+  const loadPreviews = useCallback(async (items: CriteriaTemplate[]) => {
+    const slice = items.slice(0, 8);
+    const entries = await Promise.all(
+      slice.map(async (item) => {
+        try {
+          const text = await getCriteriaBody(item.id);
+          return [item.id, markdownPreview(text)] as const;
+        } catch {
+          return [item.id, ""] as const;
+        }
+      }),
+    );
+    setPreviews(Object.fromEntries(entries));
+  }, []);
 
   const load = useCallback(async () => {
     setLoading(true);
     setMessage("");
     try {
-      const raw = await readContract<string>(REGISTRY_ADDRESS, "top", ["0", "20"]);
-      const parsed = JSON.parse(raw || "{}") as { items: TemplateRow[] };
-      setTemplates(parsed.items || []);
-      if (parsed.items?.[0]) {
-        setSelectedId(parsed.items[0].id);
-      }
+      const parsed = await listTopTemplates(20);
+      const items = parsed.items || [];
+      setTemplates(items);
+      if (items[0]) setSelectedId(items[0].id);
+      void loadPreviews(items);
     } catch (e) {
-      setMessage(e instanceof Error ? e.message : "Failed to load templates");
+      setMessage(formatReadError(e, locale));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [locale, loadPreviews]);
 
   useEffect(() => {
     load();
@@ -42,51 +57,75 @@ export default function CriteriaPage() {
 
   useEffect(() => {
     if (!selectedId) return;
-    readContract<string>(REGISTRY_ADDRESS, "get_body", [selectedId])
+    setBodyLoading(true);
+    getCriteriaBody(selectedId)
       .then(setBody)
-      .catch(() => setBody(""));
+      .catch(() => setBody(""))
+      .finally(() => setBodyLoading(false));
   }, [selectedId]);
 
   async function copyBody() {
     if (!body) return;
     await navigator.clipboard.writeText(body);
-    setMessage("Criteria copied to clipboard");
+    setMessageTone("ok");
+    setMessage(t.criteria.copied);
   }
 
   return (
     <div className="space-y-6">
+      <LoadingOverlay show={loading && templates.length === 0} label={t.criteria.loading} />
+
       <div>
-        <h1 className="text-2xl font-bold">Criteria Templates</h1>
-        <p className="text-sm text-zinc-400">
-          Read PromptRegistry on Studionet — top templates by score.
-        </p>
+        <h1 className="text-2xl font-bold">{t.criteria.title}</h1>
+        <p className="text-sm text-zinc-400">{t.criteria.subtitle}</p>
       </div>
 
       <div className="card space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold">Top templates</h2>
+          <h2 className="font-semibold">{t.criteria.top}</h2>
           <button type="button" onClick={load} className="text-sm text-teal-400 hover:underline">
-            Refresh
+            {t.criteria.refresh}
           </button>
         </div>
-        {templates.length === 0 ? (
-          <p className="text-sm text-zinc-500">{loading ? "Loading…" : "No templates yet."}</p>
+        {loading && templates.length === 0 ? (
+          <Spinner label={t.criteria.loading} />
+        ) : templates.length === 0 ? (
+          <p className="text-sm text-zinc-500">{t.criteria.noTemplates}</p>
         ) : (
-          <ul className="space-y-2">
-            {templates.map((t) => (
-              <li key={t.id}>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {templates.map((item) => (
+              <li key={item.id}>
                 <button
                   type="button"
-                  onClick={() => setSelectedId(t.id)}
-                  className={`w-full rounded-lg border p-3 text-left ${
-                    selectedId === t.id ? "border-teal-600 bg-teal-950/30" : "border-zinc-800 hover:border-zinc-600"
+                  onClick={() => setSelectedId(item.id)}
+                  className={`h-full w-full rounded-lg border p-3 text-left transition ${
+                    selectedId === item.id
+                      ? "border-teal-600 bg-teal-950/30"
+                      : "border-zinc-800 hover:border-zinc-600"
                   }`}
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="font-mono text-sm text-teal-300">{t.id}</span>
-                    <span className="text-xs text-zinc-500">score {t.score} · uses {t.uses}</span>
+                    <span className="font-mono text-sm text-teal-300">{item.id}</span>
+                    <span className="text-xs text-zinc-500">
+                      {tScoreUses(t.criteria.scoreUses, item.score, item.uses)}
+                    </span>
                   </div>
-                  <p className="mt-1 text-sm text-zinc-300">{t.title}</p>
+                  <p className="mt-1 text-sm font-medium text-zinc-200">{item.title}</p>
+                  {previews[item.id] ? (
+                    <p className="mt-2 line-clamp-3 text-xs text-zinc-500">{previews[item.id]}</p>
+                  ) : null}
+                  {item.tags?.length ? (
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {item.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full bg-zinc-800 px-2 py-0.5 text-[10px] text-zinc-400"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
                 </button>
               </li>
             ))}
@@ -103,19 +142,21 @@ export default function CriteriaPage() {
               onClick={copyBody}
               className="rounded border border-zinc-700 px-3 py-1 text-xs hover:border-zinc-500"
             >
-              Copy criteria
+              {t.criteria.copy}
             </button>
           </div>
-          <p className="text-xs text-zinc-500">
-            Pin this id in your dispute contract or use with EvidenceSnapshot cross_check adjudication.
-          </p>
-          <pre className="overflow-x-auto rounded bg-zinc-900 p-3 text-xs text-zinc-300 whitespace-pre-wrap">
-            {body || "(empty or deprecated)"}
-          </pre>
+          <p className="text-xs text-zinc-500">{t.criteria.previewHint}</p>
+          {bodyLoading ? (
+            <Spinner label={t.common.loading} />
+          ) : (
+            <pre className="overflow-x-auto rounded bg-zinc-900 p-3 text-xs text-zinc-300 whitespace-pre-wrap">
+              {body || "(empty or deprecated)"}
+            </pre>
+          )}
         </div>
       )}
 
-      {message && <p className="text-sm text-amber-300">{message}</p>}
+      <Alert message={message} tone={messageTone} />
     </div>
   );
 }
