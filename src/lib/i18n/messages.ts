@@ -5,6 +5,7 @@ export type Messages = {
     home: string;
     cases: string;
     criteria: string;
+    marketplace: string;
     connect: string;
     connecting: string;
     disconnect: string;
@@ -89,6 +90,9 @@ export type Messages = {
     crossCheckSubmitting: string;
     crossCheckFailed: string;
     rateLimited: string;
+    loadMore: string;
+    showingCount: string;
+    copiedHash: string;
   };
   criteria: {
     title: string;
@@ -123,6 +127,10 @@ export type Messages = {
   };
   common: { loading: string; error: string; retry: string };
   theme: { light: string; dark: string };
+  tooltips: { wallet: string; crossCheck: string; connect: string };
+  ai: { title: string; subtitle: string; placeholder: string; generate: string; generated: string };
+  marketplace: { title: string; subtitle: string; note: string; add: string };
+  rbac: { readOnly: string; role: string };
   wizard: {
     title: string;
     stepOf: string;
@@ -159,6 +167,7 @@ export const messages: Record<Locale, Messages> = {
       home: "Home",
       cases: "Cases",
       criteria: "Criteria",
+      marketplace: "Marketplace",
       connect: "Connect Wallet",
       connecting: "Connecting…",
       disconnect: "Disconnect",
@@ -291,6 +300,9 @@ export const messages: Record<Locale, Messages> = {
       crossCheckSubmitting: "Submitting cross_check…",
       crossCheckFailed: "cross_check failed",
       rateLimited: "Rate limit: wait {sec}s before another open_case (anti-spam)",
+      loadMore: "Load more cases",
+      showingCount: "Showing {n} of {total}",
+      copiedHash: "Hash copied",
     },
     criteria: {
       title: "Criteria Templates",
@@ -326,6 +338,28 @@ export const messages: Record<Locale, Messages> = {
     },
     common: { loading: "Loading…", error: "Something went wrong", retry: "Retry" },
     theme: { light: "Light", dark: "Dark" },
+    tooltips: {
+      wallet: "Connect MetaMask — genlayer-js adds Studionet automatically",
+      crossCheck: "Re-fetch live URLs on Studionet and flag tampering on-chain",
+      connect: "Required for open_case and cross_check transactions",
+    },
+    ai: {
+      title: "AI criteria assistant",
+      subtitle: "Describe your case — get a draft criteria template to copy into PromptRegistry.",
+      placeholder: "e.g. Verify Terms of Service page unchanged since agreement date…",
+      generate: "Generate criteria draft",
+      generated: "Criteria draft ready",
+    },
+    marketplace: {
+      title: "Criteria marketplace",
+      subtitle: "Ready-made KYC, AML, and legal template packs from the ecosystem.",
+      note: "Free packs link to PromptRegistry templates — no token sales, just shared criteria.",
+      add: "Browse templates",
+    },
+    rbac: {
+      readOnly: "Viewer role — connect as Moderator or Admin to write (demo RBAC in localStorage).",
+      role: "Role",
+    },
     wizard: {
       title: "New evidence case",
       stepOf: "Step {n} of {total}",
@@ -381,6 +415,7 @@ export const messages: Record<Locale, Messages> = {
       home: "Головна",
       cases: "Кейси",
       criteria: "Критерії",
+      marketplace: "Marketplace",
       connect: "Підключити гаманець",
       connecting: "Підключення…",
       disconnect: "Відключити",
@@ -513,6 +548,9 @@ export const messages: Record<Locale, Messages> = {
       crossCheckSubmitting: "Надсилання cross_check…",
       crossCheckFailed: "cross_check не вдався",
       rateLimited: "Ліміт: зачекайте {sec}с перед наступним open_case (anti-spam)",
+      loadMore: "Завантажити ще",
+      showingCount: "Показано {n} з {total}",
+      copiedHash: "Хеш скопійовано",
     },
     criteria: {
       title: "Шаблони критеріїв",
@@ -548,6 +586,28 @@ export const messages: Record<Locale, Messages> = {
     },
     common: { loading: "Завантаження…", error: "Щось пішло не так", retry: "Повторити" },
     theme: { light: "Світла", dark: "Темна" },
+    tooltips: {
+      wallet: "Підключіть MetaMask — genlayer-js додасть Studionet автоматично",
+      crossCheck: "Повторно завантажує live URL на Studionet і фіксує підміну on-chain",
+      connect: "Потрібно для open_case та cross_check",
+    },
+    ai: {
+      title: "AI-асистент критеріїв",
+      subtitle: "Опишіть кейс — отримайте чернетку шаблону для PromptRegistry.",
+      placeholder: "напр. Перевірити, що Terms of Service не змінились з дати угоди…",
+      generate: "Згенерувати чернетку",
+      generated: "Чернетку готово",
+    },
+    marketplace: {
+      title: "Marketplace критеріїв",
+      subtitle: "Готові пакети KYC, AML та legal з екосистеми.",
+      note: "Безкоштовні пакети ведуть до шаблонів PromptRegistry — без продажу токенів.",
+      add: "Переглянути шаблони",
+    },
+    rbac: {
+      readOnly: "Роль Viewer — для запису оберіть Moderator або Admin (demo RBAC у localStorage).",
+      role: "Роль",
+    },
     wizard: {
       title: "Новий кейс доказів",
       stepOf: "Крок {n} з {total}",

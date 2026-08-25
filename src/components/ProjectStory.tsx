@@ -9,7 +9,7 @@ export function ProjectStory() {
   const steps = t.home.storySteps;
 
   return (
-    <section className="animate-fade-up relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/60 via-zinc-950/80 to-teal-950/30 p-6 sm:p-8">
+    <section className="theme-panel animate-fade-up relative overflow-hidden rounded-2xl p-6 sm:p-8">
       <div className="story-aurora pointer-events-none absolute inset-0" aria-hidden />
 
       <div className="relative z-10 space-y-6">

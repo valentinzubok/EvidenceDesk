@@ -1,0 +1,30 @@
+{
+  "name": "evidence-desk-sdk",
+  "version": "0.1.1",
+  "description": "Read-only client for Evidence Desk / GenLayer EvidenceSnapshot API",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valentinzubok/EvidenceDesk.git",
+    "directory": "packages/evidence-desk-sdk"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": ["genlayer", "evidence-desk", "evidence-snapshot"],
+  "author": "Valentyn Zubok",
+  "license": "MIT"
+}

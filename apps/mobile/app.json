@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "Evidence Desk",
+    "slug": "evidence-desk",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "evidencedesk",
+    "userInterfaceStyle": "automatic",
+    "ios": { "supportsTablet": true },
+    "android": { "adaptiveIcon": { "backgroundColor": "#0d9488" } }
+  }
+}

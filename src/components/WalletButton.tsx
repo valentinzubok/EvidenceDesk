@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocale } from "./LocaleProvider";
+import { Tooltip } from "./ui/Tooltip";
 import { useErrorToast } from "./ErrorToast";
 import { useToast } from "./ToastProvider";
 import { useWallet } from "./WalletProvider";
@@ -67,7 +68,7 @@ export function WalletButton() {
           <span className="text-zinc-500">▾</span>
         </button>
         {open ? (
-          <div className="absolute right-0 top-full z-50 mt-2 w-56 animate-fade-up rounded-xl border border-white/10 bg-zinc-900/95 p-2 shadow-2xl backdrop-blur-xl">
+          <div className="dropdown-panel absolute right-0 top-full z-50 mt-2 w-56 animate-fade-up rounded-xl p-2 backdrop-blur-xl">
             <p className="px-2 py-1 text-[10px] uppercase tracking-wide text-zinc-500">
               {studionetReady ? t.nav.connected : t.common.loading}
             </p>
@@ -97,14 +98,16 @@ export function WalletButton() {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={handleConnect}
-        disabled={connecting || status === "connecting"}
-        className="btn-primary !py-2 !px-4"
-      >
-        {connecting ? t.nav.connecting : t.nav.connect}
-      </button>
+      <Tooltip label={t.tooltips.wallet}>
+        <button
+          type="button"
+          onClick={handleConnect}
+          disabled={connecting || status === "connecting"}
+          className="btn-primary !py-2 !px-4"
+        >
+          {connecting ? t.nav.connecting : t.nav.connect}
+        </button>
+      </Tooltip>
       {showModal ? <WalletModal onClose={() => setShowModal(false)} /> : null}
       {error && !address ? <span className="sr-only">{error}</span> : null}
     </>
@@ -116,7 +119,7 @@ function WalletModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      className="overlay-backdrop fixed inset-0 z-[60] flex items-center justify-center p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal
     >

@@ -91,7 +91,7 @@ export function CaseWizard({ open, onClose, onSubmit, submitting }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-end justify-center bg-black/60 p-0 backdrop-blur-sm sm:items-center sm:p-4"
+      className="overlay-backdrop fixed inset-0 z-[70] flex items-end justify-center p-0 backdrop-blur-sm sm:items-center sm:p-4"
       role="dialog"
       aria-modal
     >
@@ -174,7 +174,7 @@ export function CaseWizard({ open, onClose, onSubmit, submitting }: Props) {
                 {urls.map((u) => (
                   <li
                     key={u}
-                    className="flex items-start gap-2 rounded-lg border border-white/5 bg-black/20 p-2 text-xs"
+                    className="surface-deep flex items-start gap-2 rounded-lg border border-white/5 p-2 text-xs"
                   >
                     <span className="flex-1 break-all text-teal-300/90">{u}</span>
                     <button
@@ -197,7 +197,7 @@ export function CaseWizard({ open, onClose, onSubmit, submitting }: Props) {
                 <span className="text-zinc-200">{t.cases.caseId}:</span>{" "}
                 <span className="font-mono text-teal-300">{caseId}</span>
               </p>
-              <pre className="max-h-48 overflow-auto rounded-xl bg-black/40 p-3 text-xs text-zinc-400">
+              <pre className="surface-code max-h-48 overflow-auto rounded-xl p-3 text-xs">
                 {reviewJson}
               </pre>
               <p className="text-xs text-zinc-500">{w.reviewHint}</p>

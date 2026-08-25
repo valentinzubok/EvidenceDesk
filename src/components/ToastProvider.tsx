@@ -41,12 +41,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((t) => (
           <div
             key={t.id}
-            className={`animate-fade-up pointer-events-auto rounded-xl border px-4 py-3 text-sm shadow-xl backdrop-blur-md ${
-              t.tone === "ok"
-                ? "border-emerald-500/30 bg-emerald-950/80 text-emerald-100"
-                : t.tone === "warn"
-                  ? "border-amber-500/30 bg-amber-950/80 text-amber-100"
-                  : "border-teal-500/30 bg-zinc-900/90 text-zinc-100"
+            className={`toast animate-fade-up pointer-events-auto ${
+              t.tone === "ok" ? "toast-ok" : t.tone === "warn" ? "toast-warn" : "toast-info"
             }`}
           >
             {t.message}

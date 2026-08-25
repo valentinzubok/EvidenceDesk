@@ -4,6 +4,28 @@ import { formatWalletError, formatReadError } from "@/lib/errors";
 import { markdownPreview, parseJson } from "@/lib/preview";
 import { isValidCaseId, parseUrlsJson } from "@/lib/validate";
 import { canOpenCase, recordOpenCase } from "@/lib/rateLimit";
+import { paginateWithCursor, shortHash } from "@/lib/utils";
+
+describe("shortHash", () => {
+  it("shortens long hex", () => {
+    expect(shortHash("0x1234567890abcdef1234567890abcdef")).toMatch(/^0x123456…/);
+  });
+
+  it("leaves short strings", () => {
+    expect(shortHash("abc")).toBe("abc");
+  });
+});
+
+describe("paginateWithCursor", () => {
+  it("returns first page and cursor", () => {
+    const ids = ["a", "b", "c", "d", "e"];
+    const p1 = paginateWithCursor(ids, null, 2);
+    expect(p1.items).toEqual(["a", "b"]);
+    expect(p1.nextCursor).toBe("b");
+    const p2 = paginateWithCursor(ids, p1.nextCursor, 2);
+    expect(p2.items).toEqual(["c", "d"]);
+  });
+});
 
 describe("parseJson", () => {
   it("parses valid JSON", () => {

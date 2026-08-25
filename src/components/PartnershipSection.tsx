@@ -8,7 +8,7 @@ export function PartnershipSection() {
 
   return (
     <section className="animate-fade-up mt-4 border-t border-white/5 pt-10 sm:pt-12">
-      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/80 via-zinc-950/90 to-teal-950/20 p-6 sm:p-8">
+      <div className="theme-panel relative overflow-hidden rounded-2xl p-6 sm:p-8">
         <div
           className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-teal-500/10 blur-3xl"
           aria-hidden
@@ -33,7 +33,7 @@ export function PartnershipSection() {
               href={partner.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-xl border border-white/8 bg-black/25 p-4 transition hover:border-teal-500/30 hover:bg-teal-500/5"
+              className="group surface-deep rounded-xl border border-white/8 p-4 transition hover:border-teal-500/30 hover:bg-teal-500/5"
             >
               <p className="font-semibold text-white group-hover:text-teal-200">{partner.name}</p>
               <p className="mt-1 text-xs leading-relaxed text-zinc-500 sm:text-sm">
@@ -43,7 +43,7 @@ export function PartnershipSection() {
           ))}
         </div>
 
-        <p className="mt-6 rounded-xl border border-teal-500/15 bg-teal-500/5 px-4 py-3 text-sm leading-relaxed text-teal-100/80">
+        <p className="callout-teal mt-6 rounded-xl border border-teal-500/15 bg-teal-500/5 px-4 py-3 text-sm leading-relaxed">
           {t.home.partnershipPurpose}
         </p>
       </div>

@@ -5,7 +5,7 @@ export function Spinner({ label, size = "md" }: { label?: string; size?: "sm" | 
   return (
     <div className="flex items-center gap-2.5 text-sm text-zinc-400" role="status">
       <span
-        className={`inline-block ${dim} animate-spin rounded-full border-2 border-zinc-600 border-t-teal-400`}
+        className={`inline-block ${dim} spinner-ring animate-spin rounded-full border-2`}
       />
       {label ? <span>{label}</span> : null}
     </div>
@@ -21,16 +21,9 @@ export function Alert({
 }) {
   if (!message) return null;
   const cls =
-    tone === "ok"
-      ? "border-emerald-500/30 bg-emerald-950/50 text-emerald-200"
-      : tone === "info"
-        ? "border-teal-500/30 bg-teal-950/40 text-teal-100"
-        : "border-amber-500/30 bg-amber-950/50 text-amber-200";
+    tone === "ok" ? "alert alert-ok" : tone === "info" ? "alert alert-info" : "alert alert-warn";
   return (
-    <p
-      className={`rounded-xl border px-4 py-3 text-sm break-all backdrop-blur-sm ${cls}`}
-      role="alert"
-    >
+    <p className={`${cls} rounded-xl px-4 py-3 text-sm break-all backdrop-blur-sm`} role="alert">
       {message}
     </p>
   );
@@ -39,10 +32,10 @@ export function Alert({
 export function LoadingOverlay({ show, label }: { show: boolean; label?: string }) {
   if (!show) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="overlay-backdrop fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
       <div className="glass-card flex flex-col items-center gap-4 px-8 py-6">
         <div className="relative">
-          <span className="inline-block h-10 w-10 animate-spin rounded-full border-2 border-zinc-700 border-t-teal-400" />
+          <span className="spinner-ring inline-block h-10 w-10 animate-spin rounded-full border-2" />
           <span className="absolute inset-0 rounded-full blur-md bg-teal-400/20" />
         </div>
         {label ? <p className="text-sm text-zinc-300">{label}</p> : null}

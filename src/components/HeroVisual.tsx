@@ -86,7 +86,7 @@ export function HeroVisual() {
       role="img"
       aria-label="Animated evidence fingerprint visualization"
     >
-      <div className="hero-visual-frame absolute inset-0 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/90 via-zinc-950/95 to-black/90 shadow-2xl shadow-teal-500/10">
+      <div className="hero-visual-frame hero-frame absolute inset-0 overflow-hidden rounded-2xl shadow-2xl shadow-teal-500/10">
         <div className="hero-grid absolute inset-0 opacity-40" />
         <div className="hero-scan-beam absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-teal-400/25 via-teal-400/5 to-transparent" />
 

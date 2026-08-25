@@ -1,45 +1,43 @@
 # Evidence Desk roadmap
 
-Items from ecosystem feedback — status as of v1.x.
+## ✅ Shipped (v1.x)
 
-## ✅ Shipped (dApp)
+### dApp UX
+- Case wizard, cross_check progress + retry, FAQ (EN/UA)
+- Dark / light theme, toasts, rate limit on open_case
+- **SWR caching** for list_cases / get_case / stats
+- **Infinite scroll** + cursor API (`/api/cases?cursor=&limit=`)
+- **Dynamic routes** `/cases/[id]`, shareable URLs
+- **shortHash** for tx/content hashes, **Tooltips** on wallet & cross_check
+- **Marketplace** page (KYC/AML/legal packs → Criteria)
+- **AI criteria assistant** (`POST /api/ai/suggest-criteria`)
+- **RBAC demo** (Admin / Moderator / Viewer in localStorage)
+- **Chain service layer** (Studionet live; Asimov/Polkadot/Solana placeholders)
 
-- Case creation **wizard** with in-browser URL validation
-- **cross_check** progress UI + retry
-- Criteria **search**, **tag filter**, **sort** by score/uses
-- **FAQ** (EN / UA)
-- **Dark / light** theme toggle
-- Client **rate limit** on `open_case` (5/min per address)
-- CONTRIBUTING.md, SECURITY.md, ARCHITECTURE.md
-- OpenAPI-style contract docs (`docs/openapi.yaml`)
+### API & SDK
+- `GET /api/cases`, `/api/cases/summary`, `/api/history`
+- **`evidence-desk-sdk`** package (`packages/evidence-desk-sdk`)
 
-## 🔜 Smart contracts (requires new deploys)
+### DevOps
+- CI: lint, format, test, build
+- Security workflow: npm audit + tests
+- Deploy workflow (Vercel secrets)
+- **Dockerfile** + docker-compose
 
-| Feature                 | Description                                                   |
-| ----------------------- | ------------------------------------------------------------- |
-| **Factory contract**    | Deploy isolated EvidenceDesk + Snapshot instances per builder |
-| **RBAC**                | owner / validator / viewer roles for update & deprecate       |
-| **batch_open_cases**    | Lower overhead for bulk evidence intake                       |
-| **On-chain rate limit** | `open_case` cooldown per address                              |
-| **record_use / Points** | Track case reuse for GenLayer Portal rewards                  |
+## 🔜 Requires contracts / infra
 
-## 🔜 Infrastructure
-
-| Feature                | Description                                          |
-| ---------------------- | ---------------------------------------------------- |
-| **Read-only GraphQL**  | Index Studionet cases for external tools (no wallet) |
-| **OpenAPI gateway**    | Optional REST proxy if GraphQL is added              |
-| **Slither / MythX CI** | Automated reports on primitive contract repos        |
-
-## 🔜 Ecosystem
-
-| Feature                        | Description                                           |
-| ------------------------------ | ----------------------------------------------------- |
-| **Studio plugin**              | Scaffold Evidence Desk front-end from GenLayer Studio |
-| **Dispute marketplace bridge** | Post cases as collateral in resolution markets        |
-| **YouTube tutorial**           | Full flow walkthrough for newcomers                   |
-| **Discord #evidencedesk**      | Community feedback channel                            |
+| Feature | Notes |
+|---------|--------|
+| On-chain RBAC | Replace localStorage demo |
+| Cross-chain EvidenceChain | Adapters stubbed in `chainService.ts` |
+| Factory / batch_open_cases | New EvidenceSnapshot deploy |
+| GraphQL index | External indexer |
+| Cypress e2e + MetaMask | CI runner with wallet mock |
+| Storybook | UI component catalog |
+| OWASP ZAP full scan | Add staging URL to CI |
+| npm publish SDK | `npm publish` from packages/evidence-desk-sdk |
+| Asimov read-only demo | `NEXT_PUBLIC_CHAIN=asimov` when RPC live |
 
 ## Contributing
 
-Pick a **good first issue** or propose a PR — see [CONTRIBUTING.md](../CONTRIBUTING.md).
+See [CONTRIBUTING.md](../CONTRIBUTING.md).

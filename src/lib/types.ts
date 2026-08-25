@@ -1,5 +1,23 @@
 import type { Address } from "./genlayer";
 
+export type GenLayerResponse<T> = {
+  ok: true;
+  data: T;
+} | {
+  ok: false;
+  error: string;
+};
+
+/** On-chain criteria prompt body from PromptRegistry */
+export type Prompt = {
+  id: string;
+  title: string;
+  body: string;
+  score?: number;
+  uses?: number;
+  tags?: string[];
+};
+
 export type CaseItem = {
   url: string;
   content_hash: string;
