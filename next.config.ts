@@ -13,7 +13,7 @@ const csp = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  ...(process.env.DOCKER_BUILD === "true" ? { output: "standalone" as const } : {}),
   async headers() {
     return [
       {
