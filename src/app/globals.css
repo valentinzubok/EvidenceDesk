@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+:root {
+  --background: #09090b;
+  --foreground: #fafafa;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
+input,
+textarea,
+select {
+  background: #18181b;
+  border: 1px solid #3f3f46;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  color: #fafafa;
+  width: 100%;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.card {
+  border: 1px solid #27272a;
+  background: #0c0c0e;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+}
+
+.badge-ok {
+  background: #064e3b;
+  color: #6ee7b7;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+
+.badge-bad {
+  background: #7f1d1d;
+  color: #fca5a5;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
