@@ -3,6 +3,7 @@ name: Deploy
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -24,12 +25,13 @@ jobs:
           NEXT_PUBLIC_REGISTRY_ADDRESS: "0xc62eC7D0133867b33f50D7E9416D01A8Cc244DF3"
 
       - name: Deploy to Vercel
-        if: ${{ secrets.VERCEL_TOKEN != '' }}
-        run: npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Skip deploy (missing VERCEL_TOKEN)
-        if: ${{ secrets.VERCEL_TOKEN == '' }}
-        run: echo "Set VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID repo secrets to enable CI deploy."
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "Skipping deploy: set VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID repo secrets."
+            exit 0
+          fi
+          npx vercel deploy --prod --token="$VERCEL_TOKEN"

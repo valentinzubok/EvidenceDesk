@@ -12,11 +12,25 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "storybook-static/**",
+    "apps/**",
+    "cypress/**",
+    "packages/**/dist/**",
+    "public/social/**",
   ]),
   {
     rules: {
       // Data-fetch and localStorage hydration on mount are intentional
       "react-hooks/set-state-in-effect": "off",
+    },
+  },
+  {
+    files: ["src/app/api/factory/route.ts", "src/components/CasesView.tsx", "src/lib/genlayer.ts"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
     },
   },
 ]);

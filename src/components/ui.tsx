@@ -4,9 +4,7 @@ export function Spinner({ label, size = "md" }: { label?: string; size?: "sm" | 
   const dim = size === "sm" ? "h-3.5 w-3.5" : "h-5 w-5";
   return (
     <div className="flex items-center gap-2.5 text-sm text-zinc-400" role="status">
-      <span
-        className={`inline-block ${dim} spinner-ring animate-spin rounded-full border-2`}
-      />
+      <span className={`inline-block ${dim} spinner-ring animate-spin rounded-full border-2`} />
       {label ? <span>{label}</span> : null}
     </div>
   );

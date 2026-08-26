@@ -26,7 +26,12 @@ export function Modal({ open, onClose, title, children, className = "" }: Props)
         {title ? (
           <div className="mb-4 flex items-start justify-between gap-3">
             <h2 className="text-lg font-semibold text-white">{title}</h2>
-            <button type="button" onClick={onClose} className="btn-icon !border-0" aria-label="Close">
+            <button
+              type="button"
+              onClick={onClose}
+              className="btn-icon !border-0"
+              aria-label="Close"
+            >
               ✕
             </button>
           </div>

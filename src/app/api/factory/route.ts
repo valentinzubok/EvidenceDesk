@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createDeskViaFactory, listFactoryDesks } from "@/lib/contracts-extended";
+import { listFactoryDesks } from "@/lib/contracts-extended";
 import { FACTORY_ADDRESS } from "@/lib/config";
 
 export const dynamic = "force-dynamic";

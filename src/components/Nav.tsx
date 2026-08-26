@@ -46,9 +46,7 @@ export function Nav() {
                   key={l.href}
                   href={l.href}
                   className={`rounded-lg px-3 py-1.5 transition-colors ${
-                    active
-                      ? "nav-link-active bg-white/5"
-                      : "nav-link hover:bg-white/5"
+                    active ? "nav-link-active bg-white/5" : "nav-link hover:bg-white/5"
                   }`}
                 >
                   {l.label}
@@ -84,9 +82,7 @@ export function Nav() {
                 type="button"
                 onClick={() => setLocale(code)}
                 className={`rounded-md px-2.5 py-1 uppercase transition-all ${
-                  locale === code
-                    ? "bg-teal-600/80 text-white shadow-sm"
-                    : "nav-link"
+                  locale === code ? "bg-teal-600/80 text-white shadow-sm" : "nav-link"
                 }`}
               >
                 {code}
@@ -109,11 +105,13 @@ export function Nav() {
             className="btn-icon hidden sm:inline-flex !py-1.5 text-[10px] uppercase"
             title="Chain"
           >
-            {chains.filter((c) => c.available).map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.label}
-              </option>
-            ))}
+            {chains
+              .filter((c) => c.available)
+              .map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.label}
+                </option>
+              ))}
           </select>
 
           <select

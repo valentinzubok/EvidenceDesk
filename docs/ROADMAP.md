@@ -3,6 +3,7 @@
 ## ✅ Shipped (v1.x)
 
 ### dApp UX
+
 - Case wizard, cross_check progress + retry, FAQ (EN/UA)
 - Dark / light theme, toasts, rate limit on open_case
 - **SWR caching** for list_cases / get_case / stats
@@ -15,10 +16,12 @@
 - **Chain service layer** (Studionet live; Asimov/Polkadot/Solana placeholders)
 
 ### API & SDK
+
 - `GET /api/cases`, `/api/cases/summary`, `/api/history`
 - **`evidence-desk-sdk`** package (`packages/evidence-desk-sdk`)
 
 ### DevOps
+
 - CI: lint, format, test, build
 - Security workflow: npm audit + tests
 - Deploy workflow (Vercel secrets)
@@ -26,17 +29,17 @@
 
 ## 🔜 Requires contracts / infra
 
-| Feature | Notes |
-|---------|--------|
-| On-chain RBAC | Replace localStorage demo |
-| Cross-chain EvidenceChain | Adapters stubbed in `chainService.ts` |
-| Factory / batch_open_cases | New EvidenceSnapshot deploy |
-| GraphQL index | External indexer |
-| Cypress e2e + MetaMask | CI runner with wallet mock |
-| Storybook | UI component catalog |
-| OWASP ZAP full scan | Add staging URL to CI |
-| npm publish SDK | `npm publish` from packages/evidence-desk-sdk |
-| Asimov read-only demo | `NEXT_PUBLIC_CHAIN=asimov` when RPC live |
+| Feature                    | Notes                                         |
+| -------------------------- | --------------------------------------------- |
+| On-chain RBAC              | Replace localStorage demo                     |
+| Cross-chain EvidenceChain  | Adapters stubbed in `chainService.ts`         |
+| Factory / batch_open_cases | New EvidenceSnapshot deploy                   |
+| GraphQL index              | External indexer                              |
+| Cypress e2e + MetaMask     | CI runner with wallet mock                    |
+| Storybook                  | UI component catalog                          |
+| OWASP ZAP full scan        | Add staging URL to CI                         |
+| npm publish SDK            | `npm publish` from packages/evidence-desk-sdk |
+| Asimov read-only demo      | `NEXT_PUBLIC_CHAIN=asimov` when RPC live      |
 
 ## Contributing
 

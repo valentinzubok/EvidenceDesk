@@ -8,12 +8,7 @@ export type Address = `0x${string}`;
 
 type EthereumProvider = NonNullable<Parameters<typeof createClient>[0]>["provider"];
 
-const CHAIN_MAP = {
-  studionet,
-  asimov: testnetAsimov,
-} as const;
-
-export type ReadChainId = keyof typeof CHAIN_MAP;
+export type ReadChainId = "studionet" | "asimov";
 
 export function getChainForRead(id: ReadChainId | ChainId = "studionet") {
   if (id === "asimov") return testnetAsimov;
@@ -24,7 +19,11 @@ export function getReadClient(chainId: ReadChainId | ChainId = "studionet") {
   return createClient({ chain: getChainForRead(chainId) });
 }
 
-export function getWriteClient(account: Address, provider: EthereumProvider, chainId: ReadChainId = "studionet") {
+export function getWriteClient(
+  account: Address,
+  provider: EthereumProvider,
+  chainId: ReadChainId = "studionet",
+) {
   return createClient({
     chain: getChainForRead(chainId),
     account,

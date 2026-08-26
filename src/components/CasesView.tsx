@@ -21,7 +21,7 @@ import { useRole } from "@/components/RoleProvider";
 import { useToast } from "@/components/ToastProvider";
 import { useWallet } from "@/components/WalletProvider";
 import { crossCheckCase, openCase } from "@/lib/contracts";
-import { formatReadError, formatWriteError } from "@/lib/errors";
+import { formatWriteError } from "@/lib/errors";
 import { mutateCasesCache, useCase, useCaseIds, useCaseStats } from "@/hooks/useGenlayerData";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { canOpenCase, recordOpenCase } from "@/lib/rateLimit";
@@ -79,7 +79,11 @@ export function CasesView({ initialCaseId }: Props) {
   const loading = idsLoading || caseLoading;
 
   const refreshAll = useCallback(async () => {
-    await Promise.all([refreshIds(), refreshStats(), selectedId ? refreshCase() : Promise.resolve()]);
+    await Promise.all([
+      refreshIds(),
+      refreshStats(),
+      selectedId ? refreshCase() : Promise.resolve(),
+    ]);
     setRecent(getRecentCases());
     mutateCasesCache();
   }, [refreshIds, refreshStats, refreshCase, selectedId]);
@@ -370,8 +374,7 @@ export function CasesView({ initialCaseId }: Props) {
         <GlassCard className="animate-fade-up space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-lg font-semibold">
-              {t.cases.detail}:{" "}
-              <span className="font-mono text-teal-300">{selected.case_id}</span>
+              {t.cases.detail}: <span className="font-mono text-teal-300">{selected.case_id}</span>
             </h2>
             <button type="button" onClick={() => copyCaseJson(selected)} className="btn-icon">
               {t.cases.copyJson}

@@ -1,6 +1,14 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { getChainAdapter, getActiveChainId, listChains } from "@/lib/chain/chainService";
 import type { ChainAdapter, ChainId } from "@/lib/chain/types";
 

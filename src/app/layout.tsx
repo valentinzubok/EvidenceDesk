@@ -40,15 +40,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <ToastProvider>
                       <Analytics />
                       <div className="page-shell flex min-h-screen flex-col">
-                      <Nav />
-                      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8 pb-16">
-                        {children}
-                      </main>
-                    </div>
-                  </ToastProvider>
-                </WalletProvider>
-              </SWRConfig>
-            </RoleProvider>
+                        <Nav />
+                        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8 pb-16">
+                          {children}
+                        </main>
+                      </div>
+                    </ToastProvider>
+                  </WalletProvider>
+                </SWRConfig>
+              </RoleProvider>
             </ChainProvider>
           </ThemeProvider>
         </LocaleProvider>
