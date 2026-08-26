@@ -13,6 +13,17 @@ export type Messages = {
     copied: string;
     connected: string;
     readOnly: string;
+    menuOpen: string;
+    menuClose: string;
+  };
+  footer: {
+    tagline: string;
+    product: string;
+    resources: string;
+    contracts: string;
+    liveDemo: string;
+    mit: string;
+    disclaimer: string;
   };
   home: {
     tag: string;
@@ -175,6 +186,19 @@ export const messages: Record<Locale, Messages> = {
       copied: "Copied!",
       connected: "Connected",
       readOnly: "Read-only",
+      menuOpen: "Open menu",
+      menuClose: "Close menu",
+    },
+    footer: {
+      tagline:
+        "Dispute evidence console for GenLayer — freeze URL snapshots, reuse eq-principle criteria, prove drift on-chain.",
+      product: "Product",
+      resources: "Resources",
+      contracts: "Contracts",
+      liveDemo: "Live demo",
+      mit: "MIT License",
+      disclaimer:
+        "Read-only browsing works without a wallet. Connect MetaMask on Studionet for open_case and cross_check.",
     },
     home: {
       tag: "GenLayer Project",
@@ -423,6 +447,19 @@ export const messages: Record<Locale, Messages> = {
       copied: "Скопійовано!",
       connected: "Підключено",
       readOnly: "Лише читання",
+      menuOpen: "Відкрити меню",
+      menuClose: "Закрити меню",
+    },
+    footer: {
+      tagline:
+        "Консоль доказів для GenLayer — заморожуйте знімки URL, використовуйте eq-principle шаблони, доводьте зміни на ланцюгу.",
+      product: "Продукт",
+      resources: "Ресурси",
+      contracts: "Контракти",
+      liveDemo: "Живе демо",
+      mit: "Ліцензія MIT",
+      disclaimer:
+        "Перегляд без гаманця доступний у режимі read-only. Підключіть MetaMask на Studionet для open_case та cross_check.",
     },
     home: {
       tag: "Проєкт GenLayer",

@@ -4,6 +4,7 @@ import { SWRConfig } from "swr";
 import { Background } from "@/components/Background";
 import { LocaleProvider } from "@/components/LocaleProvider";
 import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
 import { Analytics } from "@/components/Analytics";
 import { ChainProvider } from "@/components/ChainProvider";
 import { RoleProvider } from "@/components/RoleProvider";
@@ -41,9 +42,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                       <Analytics />
                       <div className="page-shell flex min-h-screen flex-col">
                         <Nav />
-                        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8 pb-16">
+                        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
                           {children}
                         </main>
+                        <Footer />
                       </div>
                     </ToastProvider>
                   </WalletProvider>
