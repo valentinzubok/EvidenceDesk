@@ -127,12 +127,14 @@ Production: https://evidence-desk-chi.valandelon.com
 
 ---
 
-## Contract addresses (Studionet)
+## Intelligent Contracts (in this repo)
 
-| Contract | Address |
-|----------|---------|
-| EvidenceSnapshot | `0x356C408058cb82934eE6f62B14FC85D52858721a` |
-| PromptRegistry | `0xc62eC7D0133867b33f50D7E9416D01A8Cc244DF3` |
+| Contract | Source | Studionet |
+|----------|--------|-----------|
+| EvidenceSnapshot | [`contracts/EvidenceSnapshot.py`](contracts/EvidenceSnapshot.py) | `0x356C408058cb82934eE6f62B14FC85D52858721a` |
+| PromptRegistry | [`contracts/PromptRegistry.py`](contracts/PromptRegistry.py) | `0xc62eC7D0133867b33f50D7E9416D01A8Cc244DF3` |
+
+App ↔ method map: [`contracts/README.md`](contracts/README.md) · bindings: [`src/lib/contracts.ts`](src/lib/contracts.ts)
 
 ---
 
