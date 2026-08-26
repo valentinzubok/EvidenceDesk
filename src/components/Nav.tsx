@@ -53,9 +53,7 @@ export function Nav() {
         {DEFAULT_CHAIN.label}
       </span>
 
-      {!address ? (
-        <span className="badge-neutral hidden xl:inline">{t.nav.readOnly}</span>
-      ) : null}
+      {!address ? <span className="badge-neutral hidden xl:inline">{t.nav.readOnly}</span> : null}
 
       <button
         type="button"
@@ -134,7 +132,10 @@ export function Nav() {
           </span>
         </Link>
 
-        <nav className="site-nav hidden flex-1 items-center justify-center gap-1 md:flex" aria-label="Main">
+        <nav
+          className="site-nav hidden flex-1 items-center justify-center gap-1 md:flex"
+          aria-label="Main"
+        >
           {links.map((l) => {
             const active = pathname === l.href || (l.href !== "/" && pathname.startsWith(l.href));
             return (
@@ -152,7 +153,9 @@ export function Nav() {
           })}
         </nav>
 
-        <div className="ml-auto hidden flex-wrap items-center justify-end gap-2 md:flex">{toolbar}</div>
+        <div className="ml-auto hidden flex-wrap items-center justify-end gap-2 md:flex">
+          {toolbar}
+        </div>
 
         <button
           type="button"
@@ -177,7 +180,8 @@ export function Nav() {
           <div id="mobile-nav" className="site-mobile-panel md:hidden">
             <nav className="flex flex-col gap-1 p-3" aria-label="Mobile">
               {links.map((l) => {
-                const active = pathname === l.href || (l.href !== "/" && pathname.startsWith(l.href));
+                const active =
+                  pathname === l.href || (l.href !== "/" && pathname.startsWith(l.href));
                 return (
                   <Link
                     key={l.href}

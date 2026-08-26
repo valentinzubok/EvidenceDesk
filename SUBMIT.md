@@ -1,13 +1,17 @@
 # Portal submission — Evidence Desk (Projects)
 
+## Resubmit after rejection (2026-08-26)
+
+Stewards rejected the first submit because IC sources were not in-repo. **Fixed in** `a8360f5` — use **Correct and retry → Resubmit** (not Appeal).
+
 ## Checklist
 
-- [ ] Builder activated + GitHub linked
-- [ ] Live deploy URL (Vercel)
-- [ ] GitHub repo public
-- [ ] **Both IC sources in-repo:** `contracts/EvidenceSnapshot.py` + `contracts/PromptRegistry.py`
-- [ ] Method map in `contracts/README.md` matches `src/lib/contracts.ts`
-- [ ] EvidenceSnapshot + PromptRegistry explorer links
+- [x] Builder activated + GitHub linked
+- [x] Live deploy URL (Vercel)
+- [x] GitHub repo public
+- [x] **Both IC sources in-repo:** `contracts/EvidenceSnapshot.py` + `contracts/PromptRegistry.py`
+- [x] Method map in `contracts/README.md` matches `src/lib/contracts.ts`
+- [x] EvidenceSnapshot + PromptRegistry explorer links
 - [ ] Screenshot or short demo of Cases + Criteria flow
 - [ ] Submit at [submit-contribution](https://portal.genlayer.foundation/submit-contribution)
 
@@ -28,12 +32,12 @@ Evidence Desk is a Next.js dApp where GenLayer is central to the main workflow.
 
 Use case: dispute evidence management. Builders open cases (EvidenceSnapshot), freeze URL evidence on-chain, browse shared eq-principle criteria (PromptRegistry), and cross-check for tampering — all from one dashboard.
 
-Intelligent Contract sources are included in this repository for review:
+Intelligent Contract sources are included in this repository for steward review:
 - contracts/EvidenceSnapshot.py — open_case (gl.get_webpage + eq_principle_strict_eq hashing), cross_check, list_cases, get_case, get_stats
 - contracts/PromptRegistry.py — top, get_body (plus publish/vote for publishers)
 Method map: contracts/README.md ↔ src/lib/contracts.ts
 
-Stack: Next.js + genlayer-js + MetaMask on Studionet. Real read/write IC calls — not mocked.
+Stack: Next.js + genlayer-js + MetaMask on Studionet. Real read/write IC calls — not mocked. Asimov read-only chain switch in UI.
 
 Live: https://evidence-desk-chi.valandelon.com
 GitHub: https://github.com/valentinzubok/EvidenceDesk

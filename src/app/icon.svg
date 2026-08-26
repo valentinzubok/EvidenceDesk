@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Evidence Desk">
+  <defs>
+    <linearGradient id="ed" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5eead4"/>
+      <stop stop-color="#0d9488"/>
+      <stop offset="1" stop-color="#134e4a"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="9" fill="url(#ed)"/>
+  <path fill="#042f2e" d="M8 10h16v2.2H13.8v11.6H10V12.2H8V10zm6.2 5.4h5.8v2.2h-5.8V15.4zm0 4.2h4.6v2.2h-4.6v-2.2z"/>
+</svg>

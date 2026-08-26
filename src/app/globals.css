@@ -361,6 +361,32 @@ button:disabled {
   color: var(--muted);
 }
 
+.breadcrumb-link {
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.breadcrumb-link:hover {
+  color: var(--accent-text);
+}
+
+.cases-sticky-cta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 35;
+  border-top: 1px solid var(--header-border);
+  background: color-mix(in srgb, var(--header-bg) 94%, transparent);
+  backdrop-filter: blur(18px);
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="light"] .cases-sticky-cta {
+  box-shadow: 0 -8px 28px rgba(15, 23, 42, 0.08);
+}
+
 [data-theme="light"] .site-mobile-panel {
   box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
 }

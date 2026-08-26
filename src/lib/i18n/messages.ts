@@ -25,6 +25,10 @@ export type Messages = {
     mit: string;
     disclaimer: string;
   };
+  breadcrumbs: {
+    aria: string;
+    home: string;
+  };
   home: {
     tag: string;
     title: string;
@@ -101,6 +105,7 @@ export type Messages = {
     crossCheckSubmitting: string;
     crossCheckFailed: string;
     rateLimited: string;
+    readOnlyChain: string;
     loadMore: string;
     showingCount: string;
     copiedHash: string;
@@ -199,6 +204,10 @@ export const messages: Record<Locale, Messages> = {
       mit: "MIT License",
       disclaimer:
         "Read-only browsing works without a wallet. Connect MetaMask on Studionet for open_case and cross_check.",
+    },
+    breadcrumbs: {
+      aria: "Breadcrumb",
+      home: "Home",
     },
     home: {
       tag: "GenLayer Project",
@@ -324,6 +333,7 @@ export const messages: Record<Locale, Messages> = {
       crossCheckSubmitting: "Submitting cross_check…",
       crossCheckFailed: "cross_check failed",
       rateLimited: "Rate limit: wait {sec}s before another open_case (anti-spam)",
+      readOnlyChain: "{chain} is read-only — switch to Studionet in the header to write.",
       loadMore: "Load more cases",
       showingCount: "Showing {n} of {total}",
       copiedHash: "Hash copied",
@@ -461,6 +471,10 @@ export const messages: Record<Locale, Messages> = {
       disclaimer:
         "Перегляд без гаманця доступний у режимі read-only. Підключіть MetaMask на Studionet для open_case та cross_check.",
     },
+    breadcrumbs: {
+      aria: "Навігаційний ланцюжок",
+      home: "Головна",
+    },
     home: {
       tag: "Проєкт GenLayer",
       title: "Зафіксуй докази. Обери критерії. Доведи зміни.",
@@ -585,6 +599,7 @@ export const messages: Record<Locale, Messages> = {
       crossCheckSubmitting: "Надсилання cross_check…",
       crossCheckFailed: "cross_check не вдався",
       rateLimited: "Ліміт: зачекайте {sec}с перед наступним open_case (anti-spam)",
+      readOnlyChain: "{chain} — лише читання; для запису перемкніть Studionet у шапці.",
       loadMore: "Завантажити ще",
       showingCount: "Показано {n} з {total}",
       copiedHash: "Хеш скопійовано",

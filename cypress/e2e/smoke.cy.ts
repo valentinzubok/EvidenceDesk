@@ -1,4 +1,12 @@
 describe("Evidence Desk smoke", () => {
+  it("loads home with header, footer, and favicon", () => {
+    cy.visit("/");
+    cy.contains("Evidence Desk").should("be.visible");
+    cy.get("header.site-header").should("be.visible");
+    cy.get("footer.site-footer").should("be.visible");
+    cy.get('link[rel="icon"]').should("exist");
+  });
+
   it("loads home and navigates to cases & criteria", () => {
     cy.visit("/");
     cy.contains("Evidence Desk").should("be.visible");

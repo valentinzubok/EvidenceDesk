@@ -37,7 +37,9 @@ export function Footer() {
                 </span>
               </span>
             </Link>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-zinc-400">{t.footer.tagline}</p>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-zinc-400">
+              {t.footer.tagline}
+            </p>
             <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-teal-500/25 bg-teal-500/10 px-3 py-1 text-[11px] font-medium text-teal-200/90">
               <span className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-pulse" />
               Studionet · genlayer-js
@@ -78,12 +80,20 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="https://studio.genlayer.com/contracts" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://studio.genlayer.com/contracts"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   GenLayer Studio
                 </a>
               </li>
               <li>
-                <a href="https://portal.genlayer.foundation/" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://portal.genlayer.foundation/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Builder Portal
                 </a>
               </li>
@@ -94,15 +104,29 @@ export function Footer() {
             <h3 className="footer-heading">{t.footer.contracts}</h3>
             <ul className="footer-links space-y-2.5">
               <li>
-                <a href={EXPLORER_SNAPSHOT} target="_blank" rel="noopener noreferrer" className="footer-mono">
+                <a
+                  href={EXPLORER_SNAPSHOT}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-mono"
+                >
                   EvidenceSnapshot
-                  <span className="block text-[11px] text-zinc-500">{shortHash(SNAPSHOT_ADDRESS, 6, 4)}</span>
+                  <span className="block text-[11px] text-zinc-500">
+                    {shortHash(SNAPSHOT_ADDRESS, 6, 4)}
+                  </span>
                 </a>
               </li>
               <li>
-                <a href={EXPLORER_REGISTRY} target="_blank" rel="noopener noreferrer" className="footer-mono">
+                <a
+                  href={EXPLORER_REGISTRY}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-mono"
+                >
                   PromptRegistry
-                  <span className="block text-[11px] text-zinc-500">{shortHash(REGISTRY_ADDRESS, 6, 4)}</span>
+                  <span className="block text-[11px] text-zinc-500">
+                    {shortHash(REGISTRY_ADDRESS, 6, 4)}
+                  </span>
                 </a>
               </li>
             </ul>

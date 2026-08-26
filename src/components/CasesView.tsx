@@ -16,6 +16,7 @@ import {
 } from "@/components/ui";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { useLocale } from "@/components/LocaleProvider";
+import { useChain } from "@/components/ChainProvider";
 import { useErrorToast } from "@/components/ErrorToast";
 import { useRole } from "@/components/RoleProvider";
 import { useToast } from "@/components/ToastProvider";
@@ -47,6 +48,8 @@ export function CasesView({ initialCaseId }: Props) {
   const { push } = useToast();
   const pushError = useErrorToast();
   const { canWrite: userCanWrite } = useRole();
+  const { adapter, chainId } = useChain();
+  const canTransact = userCanWrite && !adapter.readOnly;
   const { address, provider, connect } = useWallet();
 
   const { data: caseIds = [], isLoading: idsLoading, mutate: refreshIds } = useCaseIds();
@@ -85,8 +88,8 @@ export function CasesView({ initialCaseId }: Props) {
       selectedId ? refreshCase() : Promise.resolve(),
     ]);
     setRecent(getRecentCases());
-    mutateCasesCache();
-  }, [refreshIds, refreshStats, refreshCase, selectedId]);
+    mutateCasesCache(chainId);
+  }, [refreshIds, refreshStats, refreshCase, selectedId, chainId]);
 
   function openCaseDetail(id: string) {
     setSelectedId(id);
@@ -101,7 +104,7 @@ export function CasesView({ initialCaseId }: Props) {
   }
 
   async function handleWizardSubmit(caseId: string, urlsJson: string) {
-    if (!userCanWrite) {
+    if (!canTransact) {
       setMessage(t.rbac.readOnly);
       setMessageTone("warn");
       throw new Error("read only");
@@ -143,7 +146,7 @@ export function CasesView({ initialCaseId }: Props) {
   }
 
   async function handleCrossCheck(id: string) {
-    if (!userCanWrite) {
+    if (!canTransact) {
       setMessage(t.rbac.readOnly);
       return;
     }
@@ -210,7 +213,7 @@ export function CasesView({ initialCaseId }: Props) {
   const shortcutIds = [...new Set([...favorites, ...recent])].filter(Boolean);
 
   return (
-    <div className="space-y-8">
+    <div className="cases-view space-y-8 pb-24">
       <LoadingOverlay show={txLoading} label={overlayLabel || t.common.loading} />
 
       <CaseWizard
@@ -221,6 +224,10 @@ export function CasesView({ initialCaseId }: Props) {
       />
 
       <PageHero title={t.cases.title} subtitle={t.cases.subtitle} />
+
+      {adapter.readOnly ? (
+        <Alert message={t.cases.readOnlyChain.replace("{chain}", adapter.label)} tone="warn" />
+      ) : null}
 
       {stats ? (
         <div className="flex flex-wrap gap-3 animate-fade-up">
@@ -294,12 +301,18 @@ export function CasesView({ initialCaseId }: Props) {
           <button
             type="button"
             onClick={() => setWizardOpen(true)}
-            disabled={!userCanWrite}
+            disabled={!canTransact}
             className="btn-primary w-full sm:w-auto"
           >
             {t.wizard.openWizard}
           </button>
-          {!userCanWrite ? <p className="text-xs text-zinc-500">{t.rbac.readOnly}</p> : null}
+          {!canTransact ? (
+            <p className="text-xs text-zinc-500">
+              {adapter.readOnly
+                ? t.cases.readOnlyChain.replace("{chain}", adapter.label)
+                : t.rbac.readOnly}
+            </p>
+          ) : null}
         </GlassCard>
 
         <GlassCard className="animate-fade-up stagger-2 space-y-4">
@@ -349,7 +362,7 @@ export function CasesView({ initialCaseId }: Props) {
                       <button
                         type="button"
                         onClick={() => handleCrossCheck(id)}
-                        disabled={loading || txLoading || !userCanWrite}
+                        disabled={loading || txLoading || !canTransact}
                         className="btn-icon ml-auto"
                       >
                         {t.cases.crossCheck}
@@ -436,6 +449,40 @@ export function CasesView({ initialCaseId }: Props) {
       ) : null}
 
       <Alert message={message} tone={messageTone} />
+
+      <div className="cases-sticky-cta" role="region" aria-label={t.cases.openNew}>
+        <div className="cases-sticky-inner mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 sm:px-0">
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-white">{t.cases.openNew}</p>
+            <p className="text-xs text-zinc-400 truncate">
+              {adapter.readOnly
+                ? t.cases.readOnlyChain.replace("{chain}", adapter.label)
+                : address
+                  ? t.nav.connected
+                  : t.cases.connectFirst}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {canTransact ? (
+              <button
+                type="button"
+                onClick={() => setWizardOpen(true)}
+                className="btn-primary !py-2"
+              >
+                {t.wizard.openWizard}
+              </button>
+            ) : null}
+            {!address && !adapter.readOnly ? (
+              <button type="button" onClick={() => void connect()} className="btn-ghost !py-2">
+                {t.nav.connect}
+              </button>
+            ) : null}
+            <Link href="/criteria" className="btn-ghost !py-2">
+              {t.nav.criteria}
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

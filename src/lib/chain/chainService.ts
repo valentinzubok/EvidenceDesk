@@ -1,7 +1,7 @@
 import { ASIMOV_SNAPSHOT_ADDRESS, SNAPSHOT_ADDRESS } from "../config";
-import { getCase, listCaseIds } from "../contracts";
+import { getCase, getCaseStats, listCaseIds } from "../contracts";
 import { readContract } from "../genlayer";
-import type { EvidenceCase } from "../types";
+import type { CaseStats, EvidenceCase } from "../types";
 import { parseJson } from "../preview";
 import type { ChainAdapter, ChainId } from "./types";
 
@@ -16,6 +16,15 @@ async function getAsimovCase(id: string): Promise<EvidenceCase | null> {
   return parsed?.case_id ? parsed : null;
 }
 
+async function getAsimovStats(): Promise<CaseStats | null> {
+  try {
+    const raw = await readContract<string>(ASIMOV_SNAPSHOT_ADDRESS, "get_stats", [], "asimov");
+    return parseJson<CaseStats | null>(raw, null);
+  } catch {
+    return null;
+  }
+}
+
 function studionetAdapter(): ChainAdapter {
   return {
     id: "studionet",
@@ -25,6 +34,7 @@ function studionetAdapter(): ChainAdapter {
     snapshotAddress: SNAPSHOT_ADDRESS,
     listCases: listCaseIds,
     getCase,
+    getStats: getCaseStats,
   };
 }
 
@@ -37,6 +47,7 @@ function asimovAdapter(): ChainAdapter {
     snapshotAddress: ASIMOV_SNAPSHOT_ADDRESS,
     listCases: listAsimovCases,
     getCase: getAsimovCase,
+    getStats: getAsimovStats,
   };
 }
 
