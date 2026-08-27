@@ -6,7 +6,8 @@ import json
 # PromptRegistry — shared eq_principle criteria templates for GenLayer builders.
 # Copyright (c) 2026 Valentyn Zubok. MIT License.
 #
-# Studio runtime (genlayer.std): pure state registry, no web fetch required.
+# v0.4: publish/vote stay deterministic; assess_quality uses GenLayer nondet LLM
+# under eq_principle.prompt_comparative so validators independently grade criteria.
 
 MAX_ID_LEN = 64
 MAX_TITLE_LEN = 120
@@ -15,6 +16,71 @@ MAX_TAGS = 8
 MAX_TAG_LEN = 32
 MAX_PAGE = 50
 MAX_EVENTS = 200
+
+
+def _sanitize(text: str) -> str:
+    if not text:
+        return ""
+    return " ".join(str(text).replace('"', "'").split())
+
+
+def _assess_criteria_body(title: str, body: str, tags: list) -> str:
+    """Nondeterministic leader task: LLM grades whether text is usable as eq_principle criteria."""
+    clean_title = _sanitize(title)[:120]
+    clean_body = _sanitize(body)[:3500]
+    clean_tags = ",".join([_sanitize(t)[:32] for t in tags])[:200]
+
+    prompt = (
+        "You are a GenLayer Intelligent Contract reviewer.\n"
+        "Judge whether this text is usable as an equivalence-principle (eq_principle) criteria template "
+        "for validators adjudicating disputes.\n"
+        f"Title: {clean_title}\n"
+        f"Tags: {clean_tags}\n"
+        f"Criteria body:\n{clean_body}\n"
+        "Requirements for a PASS:\n"
+        "- Clear, actionable judgment rules (not marketing fluff)\n"
+        "- Mentions what evidence/output to compare or decide\n"
+        "- Unbiased / not self-serving to one party\n"
+        "- Specific enough that two validators can apply it similarly\n"
+        'Return JSON with exactly: {"passed": true/false, "grade": "A"|"B"|"C"|"F", "reasoning": "short"}\n'
+        "grade A/B = pass candidates; C/F = fail."
+    )
+
+    try:
+        result = gl.nondet.exec_prompt(prompt, response_format="json")
+    except Exception:
+        try:
+            result = gl.exec_prompt(prompt)
+        except Exception as exc:
+            return json.dumps(
+                {
+                    "passed": False,
+                    "grade": "F",
+                    "reasoning": "prompt_error:" + _sanitize(str(exc))[:160],
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+
+    if isinstance(result, str):
+        try:
+            result = json.loads(result)
+        except Exception:
+            result = {"passed": False, "grade": "F", "reasoning": "ERR_JSON_PARSE"}
+
+    if not isinstance(result, dict):
+        result = {"passed": False, "grade": "F", "reasoning": "ERR_NON_DICT"}
+
+    grade = str(result.get("grade", "F")).strip().upper()[:1]
+    if grade not in ("A", "B", "C", "F"):
+        grade = "F"
+    passed = bool(result.get("passed", False)) and grade in ("A", "B")
+    reasoning = _sanitize(str(result.get("reasoning", "")))[:400]
+    return json.dumps(
+        {"passed": passed, "grade": grade, "reasoning": reasoning},
+        sort_keys=True,
+        separators=(",", ":"),
+    )
 
 
 def _normalize_id(criteria_id: str) -> str:
@@ -149,6 +215,11 @@ class PromptRegistry(gl.Contract):
             "score": 0,
             "uses": 0,
             "version": 1,
+            "assessed": False,
+            "assessment_passed": False,
+            "assessment_grade": "",
+            "assessment_reasoning": "",
+            "assessments": 0,
         }
         self._save_entries(entries)
 
@@ -263,6 +334,73 @@ class PromptRegistry(gl.Contract):
         self._save_entries(entries)
 
     @gl.public.write
+    def assess_quality(self, criteria_id: str) -> None:
+        """Independent GenLayer validator assessment of published criteria (nondeterministic).
+
+        Stewards require material nondet ops for Intelligent Contract category.
+        Validators re-run the LLM grade under prompt_comparative and store consensus on-chain.
+        """
+        cid = _normalize_id(criteria_id)
+        entries = self._load_entries()
+        if cid not in entries:
+            raise Exception("невідомий criteria_id")
+        entry = entries[cid]
+        if entry.get("deprecated"):
+            raise Exception("не можна assess deprecated criteria")
+
+        title = str(entry.get("title", ""))
+        body = str(entry.get("body", ""))
+        tags = entry.get("tags", [])
+        if not isinstance(tags, list):
+            tags = []
+
+        def leader_fn() -> str:
+            return _assess_criteria_body(title, body, tags)
+
+        try:
+            result_json = gl.eq_principle.prompt_comparative(
+                leader_fn,
+                principle=(
+                    "`passed` and `grade` must match exactly. "
+                    "`reasoning` may be similar in meaning."
+                ),
+            )
+        except Exception:
+            result_json = gl.eq_principle_strict_eq(leader_fn)
+
+        if isinstance(result_json, dict):
+            result = result_json
+        else:
+            try:
+                result = json.loads(result_json)
+            except Exception:
+                result = {"passed": False, "grade": "F", "reasoning": "ERR_CONSENSUS_PARSE"}
+
+        grade = str(result.get("grade", "F")).strip().upper()[:1]
+        if grade not in ("A", "B", "C", "F"):
+            grade = "F"
+        passed = bool(result.get("passed", False)) and grade in ("A", "B")
+        reasoning = _sanitize(str(result.get("reasoning", "")))[:400]
+
+        entry["assessed"] = True
+        entry["assessment_passed"] = passed
+        entry["assessment_grade"] = grade
+        entry["assessment_reasoning"] = reasoning
+        entry["assessments"] = int(entry.get("assessments", 0)) + 1
+        entries[cid] = entry
+        self._save_entries(entries)
+
+        self._append_event(
+            "Assess",
+            {
+                "id": cid,
+                "passed": passed,
+                "grade": grade,
+                "caller": str(gl.message.sender_address),
+            },
+        )
+
+    @gl.public.write
     def prune_deprecated(self) -> None:
         """Owner-only: permanently remove deprecated entries from state (audit log kept in events)."""
         sender = str(gl.message.sender_address)
@@ -359,9 +497,20 @@ class PromptRegistry(gl.Contract):
                     "score": entry["score"],
                     "uses": entry["uses"],
                     "publisher": entry["publisher"],
+                    "assessed": bool(entry.get("assessed", False)),
+                    "assessment_passed": bool(entry.get("assessment_passed", False)),
+                    "assessment_grade": entry.get("assessment_grade", ""),
                 }
             )
-        rows.sort(key=lambda x: (-int(x["score"]), -int(x["uses"]), x["id"]))
+        # Prefer validator-assessed templates, then community score
+        rows.sort(
+            key=lambda x: (
+                -int(bool(x.get("assessment_passed"))),
+                -int(x["score"]),
+                -int(x["uses"]),
+                x["id"],
+            )
+        )
         page = rows[off : off + lim]
         return json.dumps(
             {"total": len(rows), "offset": off, "limit": lim, "items": page},
@@ -389,6 +538,8 @@ class PromptRegistry(gl.Contract):
         deprecated = sum(1 for e in entries.values() if e.get("deprecated"))
         active = total - deprecated
         uses = sum(int(e.get("uses", 0)) for e in entries.values())
+        assessed = sum(1 for e in entries.values() if e.get("assessed"))
+        assessed_pass = sum(1 for e in entries.values() if e.get("assessment_passed"))
         events = len(self._load_events())
         return json.dumps(
             {
@@ -396,6 +547,8 @@ class PromptRegistry(gl.Contract):
                 "active": active,
                 "deprecated": deprecated,
                 "uses": uses,
+                "assessed": assessed,
+                "assessed_pass": assessed_pass,
                 "events": events,
             },
             separators=(",", ":"),
