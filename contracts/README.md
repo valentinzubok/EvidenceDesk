@@ -5,7 +5,7 @@ Stewards can review fetching, hashing, and validator behavior here without leavi
 
 | Contract | File | Studionet address |
 |----------|------|-------------------|
-| EvidenceSnapshot | [`EvidenceSnapshot.py`](./EvidenceSnapshot.py) | [`0x356C408058cb82934eE6f62B14FC85D52858721a`](https://explorer-studio.genlayer.com/contracts/0x356C408058cb82934eE6f62B14FC85D52858721a) |
+| EvidenceSnapshot | [`EvidenceSnapshot.py`](./EvidenceSnapshot.py) | Redeploy after SHA-256 fix (old Studionet addr used 32-bit hash) |
 | PromptRegistry | [`PromptRegistry.py`](./PromptRegistry.py) | [`0xc62eC7D0133867b33f50D7E9416D01A8Cc244DF3`](https://explorer-studio.genlayer.com/contracts/0xc62eC7D0133867b33f50D7E9416D01A8Cc244DF3) |
 
 Frontend bindings: [`src/lib/contracts.ts`](../src/lib/contracts.ts).
@@ -19,13 +19,13 @@ Frontend bindings: [`src/lib/contracts.ts`](../src/lib/contracts.ts).
 | `listCaseIds()` | `list_cases()` | view |
 | `getCaseStats()` | `get_stats()` | view |
 | `getCase(id)` | `get_case(case_id)` | view |
-| `openCase(...)` | `open_case(case_id, urls_json)` | write — `gl.get_webpage` + `gl.eq_principle_strict_eq` |
-| `crossCheckCase(...)` | `cross_check(case_id)` | write — re-fetch + hash compare under eq_principle |
+| `openCase(...)` | `open_case(case_id, urls_json)` | write — `gl.get_webpage` + **SHA-256** + `eq_principle_strict_eq` |
+| `crossCheckCase(...)` | `cross_check(case_id)` | write — re-fetch + **SHA-256** compare under eq_principle |
 
 Core validator path in `EvidenceSnapshot.py`:
 
-1. `open_case` → `_capture_urls` via `gl.get_webpage` → normalize → content hash + preview → frozen under `eq_principle_strict_eq`
-2. `cross_check` → re-capture live URLs → compare hashes/status → set `tampered` when drifted
+1. `open_case` → `_capture_urls` via `gl.get_webpage` → normalize → `hashlib.sha256` hex digest + preview → freeze under `eq_principle_strict_eq`
+2. `cross_check` → re-capture live URLs → compare SHA-256 digests/status → set `tampered` when drifted
 
 ### PromptRegistry
 
