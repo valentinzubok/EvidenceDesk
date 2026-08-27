@@ -6,8 +6,8 @@ import json
 # PromptRegistry — shared eq_principle criteria templates for GenLayer builders.
 # Copyright (c) 2026 Valentyn Zubok. MIT License.
 #
-# v0.4: publish/vote stay deterministic; assess_quality uses GenLayer nondet LLM
-# under eq_principle.prompt_comparative so validators independently grade criteria.
+# v0.4.1: assess_quality consensus compares only boolean `passed`
+# (v0.4.0 UNDETERMINED when models disagreed on grade/reasoning).
 
 MAX_ID_LEN = 64
 MAX_TITLE_LEN = 120
@@ -25,25 +25,28 @@ def _sanitize(text: str) -> str:
 
 
 def _assess_criteria_body(title: str, body: str, tags: list) -> str:
-    """Nondeterministic leader task: LLM grades whether text is usable as eq_principle criteria."""
+    """Nondeterministic leader task: LLM pass/fail on criteria usability.
+
+    Consensus compares only `passed` (strict boolean) — grade/reasoning vary too much
+    across models and previously caused UNDETERMINED rounds on Studionet.
+    """
     clean_title = _sanitize(title)[:120]
     clean_body = _sanitize(body)[:3500]
     clean_tags = ",".join([_sanitize(t)[:32] for t in tags])[:200]
 
     prompt = (
         "You are a GenLayer Intelligent Contract reviewer.\n"
-        "Judge whether this text is usable as an equivalence-principle (eq_principle) criteria template "
-        "for validators adjudicating disputes.\n"
+        "Decide if this text is usable as an eq_principle criteria template for dispute validators.\n"
         f"Title: {clean_title}\n"
         f"Tags: {clean_tags}\n"
         f"Criteria body:\n{clean_body}\n"
-        "Requirements for a PASS:\n"
-        "- Clear, actionable judgment rules (not marketing fluff)\n"
-        "- Mentions what evidence/output to compare or decide\n"
-        "- Unbiased / not self-serving to one party\n"
-        "- Specific enough that two validators can apply it similarly\n"
-        'Return JSON with exactly: {"passed": true/false, "grade": "A"|"B"|"C"|"F", "reasoning": "short"}\n'
-        "grade A/B = pass candidates; C/F = fail."
+        "PASS only if ALL are true:\n"
+        "1) Clear actionable pass/fail rules\n"
+        "2) Says what evidence or outputs to compare\n"
+        "3) Not marketing fluff and not biased to one party\n"
+        "4) Specific enough for independent validators to apply similarly\n"
+        'Return JSON with exactly one field: {"passed": true} or {"passed": false}\n'
+        "No other keys. No grade. No reasoning."
     )
 
     try:
@@ -51,36 +54,20 @@ def _assess_criteria_body(title: str, body: str, tags: list) -> str:
     except Exception:
         try:
             result = gl.exec_prompt(prompt)
-        except Exception as exc:
-            return json.dumps(
-                {
-                    "passed": False,
-                    "grade": "F",
-                    "reasoning": "prompt_error:" + _sanitize(str(exc))[:160],
-                },
-                sort_keys=True,
-                separators=(",", ":"),
-            )
+        except Exception:
+            return json.dumps({"passed": False}, sort_keys=True, separators=(",", ":"))
 
     if isinstance(result, str):
         try:
             result = json.loads(result)
         except Exception:
-            result = {"passed": False, "grade": "F", "reasoning": "ERR_JSON_PARSE"}
+            result = {"passed": False}
 
     if not isinstance(result, dict):
-        result = {"passed": False, "grade": "F", "reasoning": "ERR_NON_DICT"}
+        result = {"passed": False}
 
-    grade = str(result.get("grade", "F")).strip().upper()[:1]
-    if grade not in ("A", "B", "C", "F"):
-        grade = "F"
-    passed = bool(result.get("passed", False)) and grade in ("A", "B")
-    reasoning = _sanitize(str(result.get("reasoning", "")))[:400]
-    return json.dumps(
-        {"passed": passed, "grade": grade, "reasoning": reasoning},
-        sort_keys=True,
-        separators=(",", ":"),
-    )
+    passed = bool(result.get("passed", False))
+    return json.dumps({"passed": passed}, sort_keys=True, separators=(",", ":"))
 
 
 def _normalize_id(criteria_id: str) -> str:
@@ -360,10 +347,8 @@ class PromptRegistry(gl.Contract):
         try:
             result_json = gl.eq_principle.prompt_comparative(
                 leader_fn,
-                principle=(
-                    "`passed` and `grade` must match exactly. "
-                    "`reasoning` may be similar in meaning."
-                ),
+                # Only `passed` must agree — grade/reasoning caused UNDETERMINED on Studionet
+                principle="The boolean field `passed` must be identical.",
             )
         except Exception:
             result_json = gl.eq_principle_strict_eq(leader_fn)
@@ -374,13 +359,15 @@ class PromptRegistry(gl.Contract):
             try:
                 result = json.loads(result_json)
             except Exception:
-                result = {"passed": False, "grade": "F", "reasoning": "ERR_CONSENSUS_PARSE"}
+                result = {"passed": False}
 
-        grade = str(result.get("grade", "F")).strip().upper()[:1]
-        if grade not in ("A", "B", "C", "F"):
-            grade = "F"
-        passed = bool(result.get("passed", False)) and grade in ("A", "B")
-        reasoning = _sanitize(str(result.get("reasoning", "")))[:400]
+        passed = bool(result.get("passed", False))
+        grade = "B" if passed else "F"
+        reasoning = (
+            "Validator consensus: criteria usable as eq_principle template."
+            if passed
+            else "Validator consensus: criteria not usable as eq_principle template."
+        )
 
         entry["assessed"] = True
         entry["assessment_passed"] = passed
@@ -399,7 +386,6 @@ class PromptRegistry(gl.Contract):
                 "caller": str(gl.message.sender_address),
             },
         )
-
     @gl.public.write
     def prune_deprecated(self) -> None:
         """Owner-only: permanently remove deprecated entries from state (audit log kept in events)."""
