@@ -1,15 +1,18 @@
 # { "Depends": "py-genlayer:15qfivjvy80800rh998pcxmd2m8va1wq2qzqhz850n8ggcr4i9q0" }
 
 from genlayer import *
+import hashlib
 import json
 
 # EvidenceSnapshot — freeze web evidence at dispute open (URL rot mitigation).
 # Copyright (c) 2026 Valentyn Zubok. MIT License.
 #
 # Studio runtime (genlayer.std): use get_webpage + eq_principle_strict_eq.
+# content_hash = SHA-256 hex digest of whitespace-normalized page text (not 32-bit FNV).
 
 PREVIEW_CHARS = 280
 MAX_URLS = 8
+HASH_ALGO = "sha256"
 
 
 def _normalize(text: str) -> str:
@@ -17,11 +20,8 @@ def _normalize(text: str) -> str:
 
 
 def _hash_text(text: str) -> str:
-    h = 2166136261
-    for ch in text:
-        h ^= ord(ch)
-        h = (h * 16777619) & 0xFFFFFFFF
-    return hex(h)[2:].zfill(8)
+    """Cryptographic content digest for freeze + cross_check (steward requirement)."""
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def _capture_urls(urls: list) -> str:
@@ -30,6 +30,7 @@ def _capture_urls(urls: list) -> str:
         entry = {
             "url": url,
             "content_hash": "",
+            "hash_algo": HASH_ALGO,
             "preview": "",
             "byte_len": 0,
             "status": "error",
@@ -155,12 +156,14 @@ class EvidenceSnapshot(gl.Contract):
                 match = (
                     item.get("status") == prev.get("status")
                     and item.get("content_hash") == prev.get("content_hash")
+                    and item.get("hash_algo", HASH_ALGO) == prev.get("hash_algo", HASH_ALGO)
                 )
                 if not match:
                     all_match = False
                 report.append(
                     {
                         "url": url,
+                        "hash_algo": HASH_ALGO,
                         "frozen_hash": prev.get("content_hash", ""),
                         "live_hash": item.get("content_hash", ""),
                         "frozen_status": prev.get("status", ""),
