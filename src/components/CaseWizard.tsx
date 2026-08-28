@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { DEMO_URL } from "@/lib/config";
+import { MAX_URLS_PER_CASE } from "@/lib/limits";
 import { tValidation } from "@/lib/i18n/messages";
 import type { Locale } from "@/lib/i18n/messages";
 import { isValidCaseId, parseUrlsJson, sanitizeCaseId } from "@/lib/validate";
@@ -55,6 +56,10 @@ export function CaseWizard({ open, onClose, onSubmit, submitting }: Props) {
   function addUrl() {
     const trimmed = urlInput.trim();
     if (!trimmed) return;
+    if (urls.length >= MAX_URLS_PER_CASE) {
+      setError(tValidation(locale, "too_many_urls"));
+      return;
+    }
     const err = validateUrl(trimmed, locale);
     if (err) {
       setError(err);
@@ -170,6 +175,9 @@ export function CaseWizard({ open, onClose, onSubmit, submitting }: Props) {
               >
                 {t.cases.addUrl}
               </button>
+              <p className="text-xs text-zinc-500">
+                {w.urlLimit} ({urls.length}/{MAX_URLS_PER_CASE})
+              </p>
               <ul className="max-h-40 space-y-2 overflow-y-auto">
                 {urls.map((u) => (
                   <li
@@ -234,6 +242,13 @@ export function CaseWizard({ open, onClose, onSubmit, submitting }: Props) {
                 if (step === 1 && urls.length === 0) {
                   setError(w.noUrls);
                   return;
+                }
+                if (step === 1) {
+                  const parsed = parseUrlsJson(JSON.stringify(urls));
+                  if (!parsed.ok) {
+                    setError(tValidation(locale, parsed.error));
+                    return;
+                  }
                 }
                 setError("");
                 setStep((s) => s + 1);

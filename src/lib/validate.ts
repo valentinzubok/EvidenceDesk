@@ -1,3 +1,5 @@
+import { MAX_URLS_PER_CASE } from "./limits";
+
 const CASE_ID_RE = /^[a-zA-Z0-9_-]{1,64}$/;
 const HTTPS_URL_RE = /^https:\/\/[^\s<>"']+$/i;
 
@@ -24,7 +26,7 @@ export function parseUrlsJson(
   if (!Array.isArray(parsed) || parsed.length === 0) {
     return { ok: false, error: "empty_array" };
   }
-  if (parsed.length > 20) {
+  if (parsed.length > MAX_URLS_PER_CASE) {
     return { ok: false, error: "too_many_urls" };
   }
   const urls: string[] = [];

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { MAX_URLS_PER_CASE } from "@/lib/limits";
 import { classifyError, errorKindIcon } from "@/lib/errorKind";
 import { formatWalletError, formatReadError } from "@/lib/errors";
 import { markdownPreview, parseJson } from "@/lib/preview";
@@ -87,6 +88,26 @@ describe("validate", () => {
   it("rejects http urls", () => {
     const r = parseUrlsJson('["http://example.com"]');
     expect(r.ok).toBe(false);
+  });
+
+  it(`accepts exactly ${MAX_URLS_PER_CASE} https urls`, () => {
+    const urls = Array.from(
+      { length: MAX_URLS_PER_CASE },
+      (_, i) => `https://example.com/page-${i}`,
+    );
+    const r = parseUrlsJson(JSON.stringify(urls));
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.urls).toHaveLength(MAX_URLS_PER_CASE);
+  });
+
+  it(`rejects ${MAX_URLS_PER_CASE + 1} https urls`, () => {
+    const urls = Array.from(
+      { length: MAX_URLS_PER_CASE + 1 },
+      (_, i) => `https://example.com/page-${i}`,
+    );
+    const r = parseUrlsJson(JSON.stringify(urls));
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.error).toBe("too_many_urls");
   });
 });
 

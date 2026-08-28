@@ -158,6 +158,7 @@ export type Messages = {
     cancel: string;
     add: string;
     noUrls: string;
+    urlLimit: string;
     idHint: string;
     reviewHint: string;
     openWizard: string;
@@ -405,6 +406,7 @@ export const messages: Record<Locale, Messages> = {
       cancel: "Cancel",
       add: "Add",
       noUrls: "Add at least one HTTPS URL",
+      urlLimit: "Up to 8 HTTPS URLs (EvidenceSnapshot contract limit).",
       idHint: "Use letters, numbers, underscore, hyphen — max 64 chars.",
       reviewHint: "Submitting calls open_case on EvidenceSnapshot (Studionet).",
       openWizard: "Open case wizard",
@@ -438,7 +440,7 @@ export const messages: Record<Locale, Messages> = {
     validation: {
       invalid_json: "Must be valid JSON array",
       empty_array: "Add at least one URL",
-      too_many_urls: "Maximum 20 URLs per case",
+      too_many_urls: "Maximum 8 URLs per case",
       not_string: "Each URL must be a string",
       https_only: "Only HTTPS URLs allowed",
       url_too_long: "URL too long (max 2048 chars)",
@@ -671,6 +673,7 @@ export const messages: Record<Locale, Messages> = {
       cancel: "Скасувати",
       add: "Додати",
       noUrls: "Додайте хоча б один HTTPS URL",
+      urlLimit: "До 8 HTTPS URL (ліміт контракту EvidenceSnapshot).",
       idHint: "Літери, цифри, _, - — макс. 64 символи.",
       reviewHint: "Submit викликає open_case на EvidenceSnapshot (Studionet).",
       openWizard: "Майстер нового кейсу",
@@ -704,7 +707,7 @@ export const messages: Record<Locale, Messages> = {
     validation: {
       invalid_json: "Має бути валідний JSON-масив",
       empty_array: "Додайте хоча б один URL",
-      too_many_urls: "Максимум 20 URL на кейс",
+      too_many_urls: "Максимум 8 URL на кейс",
       not_string: "Кожен URL має бути рядком",
       https_only: "Дозволені лише HTTPS URL",
       url_too_long: "URL занадто довгий (макс. 2048 символів)",

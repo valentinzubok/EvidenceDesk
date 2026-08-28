@@ -10,6 +10,8 @@ Stewards can review fetching, hashing, and validator behavior here without leavi
 
 Frontend bindings: [`src/lib/contracts.ts`](../src/lib/contracts.ts).
 
+**URL limit:** `MAX_URLS = 8` in `EvidenceSnapshot.py` ↔ `MAX_URLS_PER_CASE` in [`src/lib/limits.ts`](../src/lib/limits.ts) (validated in case wizard + `parseUrlsJson`).
+
 ## Method alignment (app ↔ contract)
 
 ### EvidenceSnapshot
@@ -19,7 +21,7 @@ Frontend bindings: [`src/lib/contracts.ts`](../src/lib/contracts.ts).
 | `listCaseIds()` | `list_cases()` | view |
 | `getCaseStats()` | `get_stats()` | view |
 | `getCase(id)` | `get_case(case_id)` | view |
-| `openCase(...)` | `open_case(case_id, urls_json)` | write — `gl.get_webpage` + **SHA-256** + `eq_principle_strict_eq` |
+| `openCase(...)` | `open_case(case_id, urls_json)` | write — `gl.get_webpage` + **SHA-256** + `eq_principle_strict_eq` (max **8** URLs) |
 | `crossCheckCase(...)` | `cross_check(case_id)` | write — re-fetch + **SHA-256** compare under eq_principle |
 
 Core validator path in `EvidenceSnapshot.py`:
