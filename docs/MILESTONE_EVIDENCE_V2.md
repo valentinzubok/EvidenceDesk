@@ -57,6 +57,15 @@ shasum -a 256 contracts/EvidenceSnapshotV2.py
 | 5 | commit adds a review line to the SLA page, then `cross_check("case/sla")` | `drift_unjudged` — the bytes moved, so the case is flagged but **not** judged yet. v1 would have stopped here and called it `tampered`. | `0x3fd8bddd924d2f1da8b06360764fe964c20a6873fad8d8045b246697e3548702` |
 | 6 | `adjudicate("case/sla")` | **`cosmetic_drift`** — the validators agreed the review line does not change the answer to the case question. `material_urls` stays empty. | `0xe4b8ba9400dc4a1ef3b423160e1eaa58d5202a4974e113dcdaa3c111d8c465e1` |
 
+| 7 | commit withdraws the uptime commitment and the credit term, then `cross_check("case/sla")` | `drift_unjudged` again — hash drift, 1195 → 1323 characters | `0xe3443ecdab0bbabcbee1a647cd6e7e62d42ecdd04d2e76eddd4cd1c59bcc1c40` |
+| 8 | `adjudicate("case/sla")` | **`material_drift`** — the same page, the same verdict mechanism, the opposite answer: the clause the question asks about is gone, so the URL lands in `material_urls` | `0xc9dc707a491391eec36db372a40ba82e1677ac4a8f438c41d1b0c00371e716c0` |
+
+State (`get_stats`): `{"cases":2,"no_drift":1,"unjudged_drift":0,"cosmetic_drift":0,"material_drift":1,"unreachable":0,"checks":3,"adjudications":2}`
+
+Steps 5–8 are the milestone in two lines: **the same page, the same contract, two different
+verdicts.** A review date is cosmetic; a withdrawn commitment is material. v1 reported both as
+`tampered = true`.
+
 The SLA evidence page is a file in a public repository
 ([`fixtures/sla.html`](https://github.com/valentinzubok/CiteGuard/blob/main/web/public/fixtures/sla.html)),
 so each edit the case reacts to is a commit anyone can diff: one commit adds a review date, the
