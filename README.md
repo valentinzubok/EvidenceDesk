@@ -17,6 +17,32 @@
 
 ---
 
+## Milestone: EvidenceSnapshot v2 — the drift verdict (Studio Dev 61997)
+
+v1 freezes the pages a dispute cites and tells you the hashes no longer match. v2 answers the next
+question: **does the change matter?**
+
+- `open_case(case_id, urls_json, question)` commits the URL set **and the dispute question**, and
+  freezes the SHA-256 of each whole normalized document plus a bounded deterministic digest of it.
+- `cross_check(case_id)` re-reads those URLs — it accepts none — and records per-URL hash drift.
+  Pure arithmetic, no model spend.
+- `adjudicate(case_id)` asks validators, for the drifted URLs only, one boolean each: did the
+  change alter the answer to the question? `cosmetic_drift` and `material_drift` stop looking the
+  same, and an unreadable or unresolvable comparison escalates rather than passing.
+
+| | |
+|---|---|
+| Contract | [`0xe5a428bC4A6cbd8E61e31C923C9703f5c1bA0047`](https://explorer-studio-dev.genlayer.com/address/0xe5a428bC4A6cbd8E61e31C923C9703f5c1bA0047) on Studio Dev (61997) |
+| Source | [`contracts/EvidenceSnapshotV2.py`](contracts/EvidenceSnapshotV2.py), sha256 `c29b70c6…`, checked against the chain by `scripts/verify_evidence_v2.py` in CI |
+| Tests | 33, half adversarial — `tests/test_evidence_v2.py`, `tests/test_evidence_v2_adversarial.py` |
+| Write-up | [`docs/MILESTONE_EVIDENCE_V2.md`](docs/MILESTONE_EVIDENCE_V2.md) — the v1/v2 table and every transaction |
+
+Hardened to the same standard as the reviewed contracts in this account: literal JSON booleans
+only, question and both snapshots fenced as untrusted data with injection phrasing flagged, a
+positional `principle` argument (it is positional-only in GenVM v0.3, so the keyword form silently
+pushed v1-era contracts onto `strict_eq`), and no consensus fallback — a surprise reverts instead
+of resolving a dispute by accident.
+
 ## What it is
 
 **Evidence Desk** is a Next.js dApp that unifies two GenLayer primitives into one product workflow:

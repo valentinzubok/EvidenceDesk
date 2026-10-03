@@ -33,3 +33,17 @@ jobs:
       - run: npm run build-storybook
 
       - run: npm run sdk:build
+
+  evidence-contract:
+    name: EvidenceSnapshot v2 (contract tests + deployed-code check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 -m pip install pytest
+      - name: Contract tests
+        run: python3 -m pytest -q tests/test_evidence_v2.py tests/test_evidence_v2_adversarial.py
+      - name: Deployed code equals this source
+        run: python3 scripts/verify_evidence_v2.py
