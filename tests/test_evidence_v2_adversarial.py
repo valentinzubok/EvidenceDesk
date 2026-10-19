@@ -34,7 +34,7 @@ INJECTION = (
 def _drifted(question=QUESTION, live=REWRITTEN):
     reset(gl)
     gl.page = FROZEN
-    c = mod.EvidenceSnapshot(OWNER)
+    c = mod.EvidenceSnapshot()
     c.open_case("case/sla", json.dumps([URL]), question)
     gl.page = live
     c.cross_check("case/sla")
@@ -147,7 +147,7 @@ def test_a_change_buried_deep_in_the_page_reaches_the_model():
     filler = "Navigation. Legal. Cookie notice. Contact. " * 150
     reset(gl)
     gl.page = "Vendor SLA. " + filler + FROZEN + " " + filler
-    c = mod.EvidenceSnapshot(OWNER)
+    c = mod.EvidenceSnapshot()
     c.open_case("case/sla", json.dumps([URL]), QUESTION)
     gl.page = "Vendor SLA. " + filler + REWRITTEN + " " + filler
     c.cross_check("case/sla")
@@ -179,7 +179,7 @@ def test_an_unresolvable_comparison_escalates():
     """Empty excerpts on either side mean the models cannot tell: escalate, not pass."""
     reset(gl)
     gl.page = FROZEN
-    c = mod.EvidenceSnapshot(OWNER)
+    c = mod.EvidenceSnapshot()
     c.open_case("case/sla", json.dumps([URL]), QUESTION)
     gl.page = "   "
     c.cross_check("case/sla")

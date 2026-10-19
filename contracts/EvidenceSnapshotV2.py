@@ -84,40 +84,33 @@ INJECTION_MARKERS = (
 def _normalize_id(value: str) -> str:
     cid = str(value).strip()
     if not cid:
-        raise Exception("case_id is required")
+        raise gl.vm.UserError("case_id is required")
     if len(cid) > MAX_ID_LEN:
-        raise Exception("case_id exceeds 64 chars")
+        raise gl.vm.UserError("case_id exceeds 64 chars")
     for ch in cid:
         ok = ("a" <= ch.lower() <= "z") or ("0" <= ch <= "9") or ch in "-_/."
         if not ok:
-            raise Exception("case_id: only a-z, 0-9, -, _, /, .")
+            raise gl.vm.UserError("case_id: only a-z, 0-9, -, _, /, .")
     return cid
-
-
-def _require_address(label: str, value: str) -> str:
-    addr = str(value).strip()
-    if not ADDR_RE.match(addr):
-        raise Exception(f"{label} must be a 0x address")
-    return addr
 
 
 def _sanitize_text(label: str, text: str, max_len: int) -> str:
     cleaned = " ".join(str(text).split())
     if not cleaned:
-        raise Exception(f"{label} is required")
+        raise gl.vm.UserError(f"{label} is required")
     if len(cleaned) > max_len:
-        raise Exception(f"{label} exceeds {max_len} chars")
+        raise gl.vm.UserError(f"{label} exceeds {max_len} chars")
     return cleaned
 
 
 def _require_https(url: str) -> str:
     u = str(url).strip()
     if not HTTPS_URL_RE.match(u):
-        raise Exception("each URL must be https:// with no whitespace")
+        raise gl.vm.UserError("each URL must be https:// with no whitespace")
     if len(u) > MAX_URL_LEN:
-        raise Exception("URL exceeds 2048 chars")
+        raise gl.vm.UserError("URL exceeds 2048 chars")
     if ".." in u[len("https://") :].split("/"):
-        raise Exception("URL must not contain .. path segments")
+        raise gl.vm.UserError("URL must not contain .. path segments")
     return u
 
 
@@ -326,10 +319,10 @@ def decide_drift(question: str, frozen: dict, live: dict, flags: list) -> bool:
     except Exception:
         verdict = None
     if not isinstance(verdict, dict):
-        raise Exception("validator verdict was not an object")
+        raise gl.vm.UserError("validator verdict was not an object")
     decision = str(verdict.get("verdict", "invalid"))
     if decision not in ("material", "cosmetic"):
-        raise Exception("validators did not return a JSON boolean verdict")
+        raise gl.vm.UserError("validators did not return a JSON boolean verdict")
     return decision == "material"
 
 
@@ -343,11 +336,11 @@ def _parse_urls(urls_json: str) -> list:
     try:
         parsed = json.loads(urls_json)
     except Exception:
-        raise Exception("urls_json must be a JSON array of URL strings")
+        raise gl.vm.UserError("urls_json must be a JSON array of URL strings")
     if not isinstance(parsed, list) or len(parsed) == 0:
-        raise Exception("provide at least one URL")
+        raise gl.vm.UserError("provide at least one URL")
     if len(parsed) > MAX_URLS:
-        raise Exception("max 8 URLs per case")
+        raise gl.vm.UserError("max 8 URLs per case")
     urls = []
     for item in parsed:
         url = _require_https(str(item))
@@ -357,14 +350,13 @@ def _parse_urls(urls_json: str) -> list:
 
 
 class EvidenceSnapshot(gl.contract.Contract):
-    owner: str
     cases_json: str
     order_json: str
     checks: str
     adjudications: str
 
-    def __init__(self, owner_address: str):
-        self.owner = _require_address("owner_address", owner_address)
+    def __init__(self):
+        # Nobody is privileged: the deployer gets no power over any case.
         self.cases_json = "{}"
         self.order_json = "[]"
         self.checks = "0"
@@ -388,13 +380,13 @@ class EvidenceSnapshot(gl.contract.Contract):
         cid = _normalize_id(case_id)
         cases = self._load()
         if cid not in cases:
-            raise Exception("unknown case_id")
+            raise gl.vm.UserError("unknown case_id")
         return cid, cases
 
     def _only_opener(self, case):
         caller = str(gl.message.sender_address)
-        if caller != case.get("opener") and caller != self.owner:
-            raise Exception("only the case opener or the owner may do that")
+        if caller != case.get("opener"):
+            raise gl.vm.UserError("only the case opener may do that")
 
     # ── writes ────────────────────────────────────────────────────────────────
 
@@ -408,9 +400,9 @@ class EvidenceSnapshot(gl.contract.Contract):
         cid = _normalize_id(case_id)
         cases = self._load()
         if cid in cases:
-            raise Exception("case_id already exists")
+            raise gl.vm.UserError("case_id already exists")
         if len(cases) >= MAX_CASES:
-            raise Exception("registry is full")
+            raise gl.vm.UserError("registry is full")
 
         urls = _parse_urls(urls_json)
         question_txt = _sanitize_text("question", question, MAX_QUESTION_LEN)
@@ -421,9 +413,9 @@ class EvidenceSnapshot(gl.contract.Contract):
         payload = json.loads(gl.eq_principle.strict_eq(fetch_fn))
         items = payload.get("items", [])
         if len(items) != len(urls):
-            raise Exception("snapshot item count mismatch")
+            raise gl.vm.UserError("snapshot item count mismatch")
         if not any(i.get("status") == "ok" for i in items):
-            raise Exception("no URL in this case could be read — nothing to freeze")
+            raise gl.vm.UserError("no URL in this case could be read — nothing to freeze")
 
         cases[cid] = {
             "case_id": cid,
@@ -455,7 +447,7 @@ class EvidenceSnapshot(gl.contract.Contract):
         cid, cases = self._case_or_raise(case_id)
         case = cases[cid]
         if case.get("status") != STATUS_OPEN:
-            raise Exception("case is closed")
+            raise gl.vm.UserError("case is closed")
 
         urls = case.get("urls", [])
         question = case.get("question", "")
@@ -531,10 +523,10 @@ class EvidenceSnapshot(gl.contract.Contract):
         cid, cases = self._case_or_raise(case_id)
         case = cases[cid]
         if case.get("status") != STATUS_OPEN:
-            raise Exception("case is closed")
+            raise gl.vm.UserError("case is closed")
         drifted = case.get("drifted_urls", [])
         if not drifted:
-            raise Exception("nothing to adjudicate: run cross_check and find drift first")
+            raise gl.vm.UserError("nothing to adjudicate: run cross_check and find drift first")
 
         live_by_url = {i.get("url", ""): i for i in case.get("live_items", [])}
         frozen_by_url = {i.get("url", ""): i for i in case.get("items", [])}
@@ -575,19 +567,13 @@ class EvidenceSnapshot(gl.contract.Contract):
 
     @gl.public.write
     def close_case(self, case_id: str) -> None:
-        """The opener (or owner) closes the case; closed cases are not re-checked."""
+        """The opener closes the case; closed cases are not re-checked. Nobody else can."""
         cid, cases = self._case_or_raise(case_id)
         case = cases[cid]
         self._only_opener(case)
         case["status"] = STATUS_CLOSED
         cases[cid] = case
         self._save(cases)
-
-    @gl.public.write
-    def transfer_ownership(self, new_owner: str) -> None:
-        if str(gl.message.sender_address) != self.owner:
-            raise Exception("only owner")
-        self.owner = _require_address("new_owner", new_owner)
 
     # ── views ─────────────────────────────────────────────────────────────────
 
@@ -634,10 +620,6 @@ class EvidenceSnapshot(gl.contract.Contract):
     @gl.public.view
     def list_cases(self) -> str:
         return self.order_json
-
-    @gl.public.view
-    def get_owner(self) -> str:
-        return self.owner
 
     @gl.public.view
     def get_stats(self) -> str:

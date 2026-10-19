@@ -30,12 +30,12 @@ question: **does the change matter?**
   change alter the answer to the question? `cosmetic_drift` and `material_drift` stop looking the
   same, and an unreadable or unresolvable comparison escalates rather than passing.
 
-| | |
-|---|---|
-| Contract | [`0xe5a428bC4A6cbd8E61e31C923C9703f5c1bA0047`](https://explorer-studio-dev.genlayer.com/address/0xe5a428bC4A6cbd8E61e31C923C9703f5c1bA0047) on Studio Dev (61997) |
-| Source | [`contracts/EvidenceSnapshotV2.py`](contracts/EvidenceSnapshotV2.py), sha256 `c29b70c6…`, checked against the chain by `scripts/verify_evidence_v2.py` in CI |
-| Tests | 33, half adversarial — `tests/test_evidence_v2.py`, `tests/test_evidence_v2_adversarial.py` |
-| Write-up | [`docs/MILESTONE_EVIDENCE_V2.md`](docs/MILESTONE_EVIDENCE_V2.md) — the v1/v2 table and every transaction |
+|          |                                                                                                                                                                   |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Contract | [`0xB154B8cDd3618ACE6b5E59C9c2EE7f64AcC783ff`](https://explorer-studio-dev.genlayer.com/address/0xB154B8cDd3618ACE6b5E59C9c2EE7f64AcC783ff) on Studio Dev (61997) |
+| Source   | [`contracts/EvidenceSnapshotV2.py`](contracts/EvidenceSnapshotV2.py), sha256 `f9a92a46…`, checked against the chain by `scripts/verify_evidence_v2.py` in CI      |
+| Tests    | 33, half adversarial — `tests/test_evidence_v2.py`, `tests/test_evidence_v2_adversarial.py`                                                                       |
+| Write-up | [`docs/MILESTONE_EVIDENCE_V2.md`](docs/MILESTONE_EVIDENCE_V2.md) — the v1/v2 table and every transaction                                                          |
 
 Hardened to the same standard as the reviewed contracts in this account: literal JSON booleans
 only, question and both snapshots fenced as untrusted data with injection phrasing flagged, a
@@ -47,10 +47,10 @@ of resolving a dispute by accident.
 
 **Evidence Desk** is a Next.js dApp that unifies two GenLayer primitives into one product workflow:
 
-| Primitive | Role in app |
-|-----------|-------------|
-| [EvidenceSnapshot](https://github.com/valentinzubok/EvidenceSnapshot) | Open cases, view frozen hashes, run cross_check |
-| [PromptRegistry](https://github.com/valentinzubok/PromptRegistry) | Browse top criteria templates, copy get_body text |
+| Primitive                                                             | Role in app                                       |
+| --------------------------------------------------------------------- | ------------------------------------------------- |
+| [EvidenceSnapshot](https://github.com/valentinzubok/EvidenceSnapshot) | Open cases, view frozen hashes, run cross_check   |
+| [PromptRegistry](https://github.com/valentinzubok/PromptRegistry)     | Browse top criteria templates, copy get_body text |
 
 GenLayer is central: all reads/writes go through **genlayer-js** on **Studionet** with MetaMask.
 
@@ -107,10 +107,10 @@ Open http://localhost:3000
 
 ### Environment variables
 
-| Variable | Description | Default (Studionet) |
-|----------|-------------|---------------------|
-| `NEXT_PUBLIC_SNAPSHOT_ADDRESS` | EvidenceSnapshot contract | `0x356C…721a` |
-| `NEXT_PUBLIC_REGISTRY_ADDRESS` | PromptRegistry contract | `0xc62e…4DF3` |
+| Variable                       | Description               | Default (Studionet) |
+| ------------------------------ | ------------------------- | ------------------- |
+| `NEXT_PUBLIC_SNAPSHOT_ADDRESS` | EvidenceSnapshot contract | `0x356C…721a`       |
+| `NEXT_PUBLIC_REGISTRY_ADDRESS` | PromptRegistry contract   | `0xc62e…4DF3`       |
 
 Copy from `.env.example`:
 
@@ -155,10 +155,10 @@ Production: https://evidence-desk-chi.valandelon.com
 
 ## Intelligent Contracts (in this repo)
 
-| Contract | Source | Studionet |
-|----------|--------|-----------|
+| Contract         | Source                                                           | Studionet                                    |
+| ---------------- | ---------------------------------------------------------------- | -------------------------------------------- |
 | EvidenceSnapshot | [`contracts/EvidenceSnapshot.py`](contracts/EvidenceSnapshot.py) | `0x356C408058cb82934eE6f62B14FC85D52858721a` |
-| PromptRegistry | [`contracts/PromptRegistry.py`](contracts/PromptRegistry.py) | `0xc62eC7D0133867b33f50D7E9416D01A8Cc244DF3` |
+| PromptRegistry   | [`contracts/PromptRegistry.py`](contracts/PromptRegistry.py)     | `0xc62eC7D0133867b33f50D7E9416D01A8Cc244DF3` |
 
 App ↔ method map: [`contracts/README.md`](contracts/README.md) · bindings: [`src/lib/contracts.ts`](src/lib/contracts.ts)
 
@@ -189,9 +189,9 @@ Submit under **Projects** — see [SUBMIT.md](SUBMIT.md).
 
 ## API routes
 
-| Route | Description |
-|-------|-------------|
-| `GET /api/cases` | On-chain case IDs |
+| Route                      | Description                                    |
+| -------------------------- | ---------------------------------------------- |
+| `GET /api/cases`           | On-chain case IDs                              |
 | `GET /api/history?ids=a,b` | Validate client favorites/recent against chain |
 
 ---

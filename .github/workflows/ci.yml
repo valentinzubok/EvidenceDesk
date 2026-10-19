@@ -43,6 +43,10 @@ jobs:
         with:
           python-version: "3.12"
       - run: python3 -m pip install pytest
+      - name: GenVM lint (the check stewards run)
+        run: |
+          python3 -m pip install genvm-linter
+          sh scripts/lint_evidence_v2.sh
       - name: Contract tests
         run: python3 -m pytest -q tests/test_evidence_v2.py tests/test_evidence_v2_adversarial.py
       - name: Deployed code equals this source

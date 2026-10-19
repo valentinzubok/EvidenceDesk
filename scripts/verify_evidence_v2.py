@@ -9,7 +9,7 @@ import sys
 import urllib.request
 
 RPC = "https://studio-dev.genlayer.com/api"
-ADDRESS = "0xe5a428bC4A6cbd8E61e31C923C9703f5c1bA0047"
+ADDRESS = "0xB154B8cDd3618ACE6b5E59C9c2EE7f64AcC783ff"
 SOURCE = pathlib.Path(__file__).resolve().parents[1] / "contracts" / "EvidenceSnapshotV2.py"
 
 

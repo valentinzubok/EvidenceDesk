@@ -8,13 +8,13 @@ export const SNAPSHOT_ADDRESS = (process.env.NEXT_PUBLIC_SNAPSHOT_ADDRESS ??
  * looking the same. Source: contracts/EvidenceSnapshotV2.py, hash-checked in CI.
  */
 export const SNAPSHOT_V2_ADDRESS = (process.env.NEXT_PUBLIC_SNAPSHOT_V2_ADDRESS ??
-  "0xe5a428bC4A6cbd8E61e31C923C9703f5c1bA0047") as `0x${string}`;
+  "0xB154B8cDd3618ACE6b5E59C9c2EE7f64AcC783ff") as `0x${string}`;
 
 export const STUDIO_DEV_CHAIN_ID = 61997;
 export const STUDIO_DEV_RPC =
   process.env.NEXT_PUBLIC_STUDIO_DEV_RPC ?? "https://studio-dev.genlayer.com/api";
 export const EXPLORER_SNAPSHOT_V2 =
-  "https://explorer-studio-dev.genlayer.com/address/0xe5a428bC4A6cbd8E61e31C923C9703f5c1bA0047";
+  "https://explorer-studio-dev.genlayer.com/address/0xB154B8cDd3618ACE6b5E59C9c2EE7f64AcC783ff";
 
 export const REGISTRY_ADDRESS = (process.env.NEXT_PUBLIC_REGISTRY_ADDRESS ??
   "0xc62eC7D0133867b33f50D7E9416D01A8Cc244DF3") as `0x${string}`;

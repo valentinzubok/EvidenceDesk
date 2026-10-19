@@ -25,7 +25,7 @@ FROZEN = "Vendor SLA: 99.9% uptime, credits paid within 30 days. Contact support
 def _case(urls=None, question=QUESTION):
     reset(gl)
     gl.page = FROZEN
-    c = mod.EvidenceSnapshot(OWNER)
+    c = mod.EvidenceSnapshot()
     c.open_case("case/sla", json.dumps(urls or [URL]), question)
     return c
 
@@ -46,7 +46,7 @@ def test_open_case_freezes_whole_documents_and_fixes_the_question():
 
 def test_open_case_validates_its_inputs():
     reset(gl)
-    c = mod.EvidenceSnapshot(OWNER)
+    c = mod.EvidenceSnapshot()
     with pytest.raises(Exception, match="question is required"):
         c.open_case("case/a", json.dumps([URL]), "   ")
     with pytest.raises(Exception, match="https://"):
@@ -161,11 +161,17 @@ def test_unreadable_evidence_is_escalated_not_called_cosmetic():
 # ── access control and lifecycle ──────────────────────────────────────────────
 
 
-def test_close_case_is_opener_or_owner_only_and_stops_checks():
-    c = _case()
-    gl.message.sender_address = OTHER
-    with pytest.raises(Exception, match="only the case opener or the owner"):
-        c.close_case("case/sla")
+def test_close_case_is_opener_only_and_stops_checks():
+    deployer = "0x3333333333333333333333333333333333333333"
+    gl.message.sender_address = deployer
+    c = mod.EvidenceSnapshot()
+    gl.message.sender_address = OWNER  # here: the account that opens the case
+    gl.page = FROZEN
+    c.open_case("case/sla", json.dumps([URL]), QUESTION)
+    for who in (OTHER, deployer):
+        gl.message.sender_address = who
+        with pytest.raises(Exception, match="only the case opener may do that"):
+            c.close_case("case/sla")
     gl.message.sender_address = OWNER
     c.close_case("case/sla")
     assert json.loads(c.get_case("case/sla"))["status"] == "closed"
@@ -173,6 +179,15 @@ def test_close_case_is_opener_or_owner_only_and_stops_checks():
         c.cross_check("case/sla")
     with pytest.raises(Exception, match="case is closed"):
         c.adjudicate("case/sla")
+
+
+def test_there_is_no_owner_and_the_deployer_has_no_power():
+    src = (ROOT / "contracts" / "EvidenceSnapshotV2.py").read_text(encoding="utf-8")
+    body = src.split("class EvidenceSnapshot")[1]
+    for word in ("owner", "admin", "transfer_ownership", "def set_"):
+        assert word not in body, word
+    assert "raise Exception(" not in src and "raise gl.vm.UserError(" in src
+    assert "@staticmethod" not in body
 
 
 def test_duplicate_case_and_unknown_case():
@@ -183,4 +198,3 @@ def test_duplicate_case_and_unknown_case():
     assert json.loads(c.get_drift("nope"))["error"] == "unknown case_id"
     assert c.get_tamper_flag("nope") is False
     assert json.loads(c.list_cases()) == ["case/sla"]
-    assert c.get_owner() == OWNER
